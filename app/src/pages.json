@@ -1,0 +1,55 @@
+{
+    "globalStyle": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "每日打卡",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+    },
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue"
+        }
+    },
+    "pages": [
+        {
+            "path": "pages/index/index",
+            "type": "home",
+            "layout": "tabbar",
+            "style": {
+                "navigationBarTitleText": "计数器"
+            },
+            "name": "home"
+        },
+        {
+            "path": "pages/mine/index",
+            "type": "page",
+            "layout": "tabbar",
+            "style": {
+                "navigationBarTitleText": "我的"
+            },
+            "name": "mine"
+        },
+        { "path":"pages/mine/profile" }
+    ],
+    "subPackages": [
+        {
+            "root": "pages-sub",
+            "pages": [
+                {
+                    "path": "detail/index",
+                    "type": "page"
+                },
+                { "path": "detail/detail" },
+                {
+                    "path": "login/index",
+                    "type": "page",
+                    "style": {
+                        "navigationBarTitleText": "登录"
+                    },
+                    "name": "Login"
+                }
+            ]
+        }
+    ]
+}

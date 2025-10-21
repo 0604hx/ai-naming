@@ -1,0 +1,15 @@
+{
+    "workspaces": [
+        "app",
+        "server"
+    ],
+    "name": "ai-naming",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "scripts": {
+        "serve": "bun --cwd server ./server.js"
+    }
+}
