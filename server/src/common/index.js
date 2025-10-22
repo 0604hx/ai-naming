@@ -1,4 +1,4 @@
-const D = require("./date")
+import * as D from "./date.js"
 
 /**
  *
@@ -15,15 +15,12 @@ const success = (data, message)=>({data, message, success:true})
  */
 const error   = (message, data)=>({data, message, success:false})
 
-exports.error       = error
-exports.success     = success
-
-exports.D = D
+export { error, success, D }
 
 /**
  *
  */
-exports.assert = {
+export const assert = {
     hasText: (o, msg)=> {
         if(typeof(o) != 'string' || o.trim().length==0)
             throw msg || "参数不能为空"
@@ -43,4 +40,4 @@ exports.assert = {
  * @param {String} text
  * @returns
  */
-exports.wrap = text=> `⌈${text}⌋`
+export const wrap = text=> `⌈${text}⌋`

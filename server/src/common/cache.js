@@ -1,4 +1,4 @@
-const NodeCache = require('node-cache')
+import NodeCache from 'node-cache'
 
 const cache = new NodeCache({ useClones: true })
 
@@ -9,30 +9,30 @@ const cache = new NodeCache({ useClones: true })
  * @param {Number} ttl
  * @returns
  */
-exports.set = (key, value, ttl=2*60*60)=> {
+export const set = (key, value, ttl=2*60*60)=> {
     cache.set(key, value, ttl)
     return value
 }
 
-exports.get = (key, defaultVal)=> cache.get(key) || defaultVal
+export const get = (key, defaultVal)=> cache.get(key) || defaultVal
 
-exports.take = key=> cache.take(key)
+export const take = key=> cache.take(key)
 
 /**
  *
  * @param {String} key
  * @returns {Boolean}
  */
-exports.has = key=> cache.has(key)
+export const has = key=> cache.has(key)
 
 /**
  * 删除缓存
  * @param {String|Array<String>} key
  * @returns {Number}
  */
-exports.del = key=> cache.del(key)
+export const del = key=> cache.del(key)
 
-exports.keys = ()=> cache.keys()
+export const keys = ()=> cache.keys()
 
 /**
  *
@@ -40,7 +40,7 @@ exports.keys = ()=> cache.keys()
  * @param {Boolean} withPrefix - 是否前缀匹配删除
  * @returns {Number} 删除的个数
  */
-exports.clear = (key, withPrefix=false)=>{
+export const clear = (key, withPrefix=false)=>{
     let count = 0
     if(withPrefix){
         cache.keys()
@@ -59,4 +59,4 @@ exports.clear = (key, withPrefix=false)=>{
     return count
 }
 
-exports.stats = ()=> cache.getStats()
+export const stats = ()=> cache.getStats()

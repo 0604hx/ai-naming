@@ -1,22 +1,20 @@
-const { resolve } = require("node:path")
-const fastify = require("fastify")
-const logger = require("./logger")
-const { error, success } = require('.')
-const { verifyJwtToken } = require("./secret")
-const { AuthBean } = require("../beans")
-const { loadAuthBean } = require("../service/CacheService")
-const fastifyMulipart = require('@fastify/multipart')
-const fastifyStatic = require('@fastify/static')
-const { Roles } = require("../fields")
-const { TokenExpiredError } = require("jsonwebtoken")
+import { resolve } from "node:path"
+import fastify from "fastify"
+import logger from "./logger.js"
+import { error, success } from './index.js'
+import { verifyJwtToken } from "./secret.js"
+// import { AuthBean } from "../beans.js"
+// import { loadAuthBean } from "../service/CacheService"
+import fastifyStatic from '@fastify/static'
+// import { Roles } from "../fields.js"
+import jwt from "jsonwebtoken"
 
 /**
  *
  * @param {ServerConfig} config
  */
-exports.setupApp = config=>{
+export const setupApp = config=>{
     const app = fastify({logger: false, disableRequestLogging: true, trustProxy: true })
-    app.register(fastifyMulipart)
     app.register(fastifyStatic, {
         root: resolve(process.cwd(), config.wwwDir),
         prefix: config.wwwPrefix
@@ -28,7 +26,7 @@ exports.setupApp = config=>{
     app.setNotFoundHandler((req, res)=> res.status(404).send(error(`${req.url} NOT FOUND`)))
     app.setErrorHandler((e, req, res)=>{
         let msg = typeof(e) === 'string'?e:e.message
-        if(e instanceof TokenExpiredError){
+        if(e instanceof jwt.TokenExpiredError){
             return res.status(403).send(error(`403|`+msg))
         }
         global.isDebug && console.error(e)

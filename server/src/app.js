@@ -5,18 +5,18 @@ global.isPro = process.env.NODE_ENV === 'production'
 global.isDebug = global.isDebug ??= !global.isPro
 global.showSQL = cmdArgs.includes("--sql")
 
-const { writeFileSync } = require('node:fs')
-const { setupApp } = require("./common/fastify")
-const logger = require("./common/logger")
-const config = require("./config")
-const { setupDB } = require("./db")
-const { createTableIfNotExist } = require("./db/schema")
-const routes = require("./routes")
-const { AccountService } = require("./service")
-const { CONFIG_FILE } = require('./fields')
-const { createSm4Key } = require('./common/secret')
-const { cloneDeep } = require('lodash')
-const { startScheduleTasks } = require('./service/ScheduleService')
+import { writeFileSync } from 'node:fs'
+import { setupApp } from "./common/fastify.js"
+import logger from "./common/logger.js"
+import config from "./config.js"
+import { setupRoutes } from "./routes"
+// import { createTableIfNotExist } from "./db/schema.js"
+import { CONFIG_FILE } from './fields.js'
+import { createSm4Key } from './common/secret.js'
+import { cloneDeep } from 'lodash-es'
+import { uuid } from './common/tool.js'
+
+console.debug("UUID=", uuid())
 
 if(cmdArgs.includes("--config")){
     //创建 config.json 文件
@@ -33,7 +33,7 @@ if(cmdArgs.includes("--key")){
     process.exit(0)
 }
 
-setupDB(config)
+// setupDB(config)
 
 const dealError = (e, msg="")=>{
     logger.error(msg, e)
@@ -50,7 +50,7 @@ if(cmdArgs.includes("--init")){
 }
 else{
     const app = setupApp(config)
-    routes(app)
+    setupRoutes(app)
 
     app.listen({ port: config.port }, (err) => {
         if (err) {
@@ -58,11 +58,9 @@ else{
             process.exit(1)
         }
 
-        startScheduleTasks()
-
         if(global.showSQL)  logger.info(`SHOW-SQL = true`)
 
-        const v = process.env.VERSION?` (build on ${process.env.VERSION})`:""
-        logger.info(`APP STARTED ON PORT ${config.port}${v} ^.^`)
+        const v = global.isPro ? process.env.APP_VERSION || APP_VERSION : ""
+        logger.info(`APP STARTED ON PORT ${config.port}${v?` (build version ${v})`:""} ^.^`)
     })
 }

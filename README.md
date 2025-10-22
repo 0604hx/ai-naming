@@ -8,4 +8,4 @@
 
 * about：项目文档
 * app：客户端代码（基于 [uni-app](https://uniapp.dcloud.net.cn/)）
-* server：服务端代码（基于 [Bun.js](https://bun.com/)）
+* server：服务端代码（基于 [fastify.js](https://fastify.dev/)）

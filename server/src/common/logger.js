@@ -2,10 +2,11 @@
  * @Author: 集成显卡
  * @Date: 2022-12-02 10:05:37
  * @Last Modified by: 集成显卡
- * @Last Modified time: 2025-01-13 16:02:41
+ * @Last Modified time: 2025-10-22 15:38:22
  */
 
-const fs = require("fs")
+import { existsSync, mkdirSync } from "fs"
+import { dailyfile, colorConsole } from "tracer"
 
 const dateformat = global.isPro? "yyyy-mm-dd HH:MM:ss.L":"HH:MM:ss.L"
 
@@ -13,7 +14,7 @@ const buildLogger = (withFile=true)=>{
     //创建 logs 目录
     const _dir = global.logDir||"logs"
     if(withFile)
-        fs.existsSync(_dir) || fs.mkdirSync(_dir, {recursive: true})
+        existsSync(_dir) || mkdirSync(_dir, {recursive: true})
     const format = [
         "{{timestamp}} {{title}} : {{message}}", //default format
     ]
@@ -23,7 +24,7 @@ const buildLogger = (withFile=true)=>{
         })
     }
     var logger = withFile?
-        require('tracer').dailyfile({
+        dailyfile({
             root:_dir,
             logPathFormat: global.logPath ?? "{{root}}/{{date}}.log",//默认日志保存到logs/{日期}.log，如需配置单文件："log.txt"
             format,
@@ -32,7 +33,7 @@ const buildLogger = (withFile=true)=>{
             transport: d=>console.log(d.output)
         })
         :
-        require("tracer").colorConsole({
+        colorConsole({
             format,
             dateformat: dateformat,
             preprocess: function (data) {
@@ -43,4 +44,4 @@ const buildLogger = (withFile=true)=>{
 }
 
 // 测试环境下只使用 控制台Logger
-module.exports = buildLogger(global.isPro == true)
+export default buildLogger(global.isPro == true)

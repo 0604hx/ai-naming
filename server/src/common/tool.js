@@ -1,11 +1,10 @@
-const { customAlphabet } = require('nanoid')
-const { readdirSync, unlinkSync, statSync, rmdirSync } = require('node:fs')
-const { resolve } = require('node:path')
-const { datetime } = require('./date')
-const os = require('node:os')
-const config = require('../config')
-const { SQLITE } = require('../db')
-const { spawnSync } = require('node:child_process')
+import { customAlphabet } from 'nanoid'
+import { readdirSync, unlinkSync, statSync, rmdirSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { datetime } from './date'
+import os from 'node:os'
+import config from '../config'
+import { spawnSync } from 'node:child_process'
 
 const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz", 16)
 
@@ -31,9 +30,9 @@ const emptyDir = dir=>{
  * @param {Number} len
  * @returns
  */
-exports.uuid = (len=16)=> nanoid(len)
+export const uuid = (len=16)=> nanoid(len)
 
-exports.emptyDir = emptyDir
+export { emptyDir }
 
 /**
  * @typedef {Object} AppStats - 应用运行状态
@@ -48,7 +47,7 @@ exports.emptyDir = emptyDir
  *
  * @returns {AppStats}
  */
-exports.osAndAppStats = async () => {
+export const osAndAppStats = async () => {
     let cpus = os.cpus()
     let speed = cpus.length>0?cpus[0].speed:0
     speed = speed<1000?`${speed}MHz`:`${speed/1000}GHz`
@@ -62,7 +61,7 @@ exports.osAndAppStats = async () => {
         memTotal: os.totalmem(),
         memUse: process.memoryUsage.rss(),
         started: datetime(new Date(Date.now() - process.uptime()*1000)),
-        dbSize: config.db.type==SQLITE? statSync(config.db.file).size:0,
+        dbSize: statSync(config.db.file).size,
         dbType: config.db.type
     }
 }
@@ -72,7 +71,7 @@ exports.osAndAppStats = async () => {
  * @param {String} cmd
  * @returns {Boolean}
  */
-exports.runOSCmd = (cmd, args=[])=>{
+export const runOSCmd = (cmd, args=[])=>{
     let re = spawnSync(cmd, args, {timeout: 1000})
     if(re.status == 0)
         return re.stdout.toString().trim()

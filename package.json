@@ -6,10 +6,11 @@
     "name": "ai-naming",
     "type": "module",
     "private": true,
-    "devDependencies": {
-        "@types/bun": "latest"
-    },
     "scripts": {
-        "serve": "bun --cwd server ./server.js"
+        "serve": "pnpm -F server dev",
+        "serve:build": "pnpm -F server build"
+    },
+    "dependencies": {
+        "sm-crypto": "^0.3.13"
     }
 }

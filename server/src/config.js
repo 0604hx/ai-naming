@@ -1,12 +1,12 @@
-const { readFileSync, existsSync, statSync, watch } = require('node:fs')
-const { debounce, merge } = require('lodash')
-const logger = require('./common/logger')
-const { CONFIG_FILE } = require('./fields')
+import { readFileSync, existsSync, statSync, watch } from 'node:fs'
+import { debounce, merge } from 'lodash-es'
+import logger from './common/logger.js'
+import  { CONFIG_FILE, C } from './fields.js'
 
-const configFile = "config.json"
+const configFile = CONFIG_FILE
 
 const config = {
-    port: 10001,
+    port: 10002,
     cors: !global.isPro ?? false,
     dataDir: "data",        //附近保存路径
     wwwDir: "www",          //静态资源目录
@@ -74,4 +74,4 @@ if(global.isPro && existsSync(configFile) && statSync(configFile).isFile()){
     global.isDebug && logger.debug(`从${configFile}中读取配置文件`, fileCfg)
 }
 
-module.exports = config
+export default config

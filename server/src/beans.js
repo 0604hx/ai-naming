@@ -37,7 +37,7 @@ class AuthBean {
     }
 }
 
-module.exports = {
+export default {
     AuthBean,
     Status
 }
