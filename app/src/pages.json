@@ -1,0 +1,60 @@
+{
+    "globalStyle": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "AI取名大师",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+    },
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue"
+        }
+    },
+    "pages": [
+        {
+            "path": "pages/index/index",
+            "type": "home",
+            "layout": "tabbar",
+            "style": {
+                "navigationBarTitleText": "AI取名大师"
+            },
+            "name": "home"
+        },
+        {
+            "path": "pages/mine/index",
+            "type": "page",
+            "layout": "tabbar",
+            "style": {
+                "navigationBarTitleText": "我的"
+            },
+            "name": "mine"
+        }
+    ],
+    "subPackages": [
+        {
+            "root": "pages-sub",
+            "pages": [
+                { "path": "form", "type": "page" },
+                { "path":"coupon", "type":"page" },
+                { "path": "setting", "type":"page" },
+                { "path": "about", "type":"page" },
+                { "path":"admin/index", "type":"page" },
+                { "path":"admin/coupon", "type":"page" },
+                { "path":"admin/name", "type":"page" },
+                { "path":"admin/log", "type":"page" },
+                { "path":"admin/pwd", "type":"page" },
+                { "path":"admin/system/index", "type":"page" },
+
+                {
+                    "path": "login/index",
+                    "type": "page",
+                    "style": {
+                        "navigationBarTitleText": "登录"
+                    },
+                    "name": "Login"
+                }
+            ]
+        }
+    ]
+}
