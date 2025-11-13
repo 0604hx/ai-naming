@@ -3,6 +3,13 @@
  *
  * 示例值：
  * 4.56.20250312 -> 3.0.0-4050620250312001
+ *
+ * npm镜像信息 https://registry.npmmirror.com/-/package/@dcloudio/vite-plugin-uni/dist-tags
+ *
+ *
+ * 用过的版本
+ *  3.0.0-4080420251103001
+ *  3.0.0-alpha-4080620251107001
  */
 import pc from 'picocolors'
 

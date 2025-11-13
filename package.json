@@ -16,11 +16,14 @@
         "serve:db": "bun --cwd server dev --db",
         "serve:build": "bun --cwd server build",
         "app:h5": "bun --cwd app dev:h5",
-        "app:h5:build": "bun --cwd app build:h5"
+        "app:h5:build": "bun --cwd app build:h5",
+        "app:h5:build:dev": "bun --cwd app build:h5:dev",
+        "zip": "bun --cwd app zip:h5"
     },
     "dependencies": {
         "sm-crypto": "^0.3.13",
-        "picocolors": "^1.1.1"
+        "picocolors": "^1.1.1",
+        "adm-zip": "^0.5.16"
     },
     "devDependencies": {
         "@types/bun": "^1.3.2"

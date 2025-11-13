@@ -33,7 +33,7 @@
 
         RESULT(
             "/master/verify",
-            { code: code.value },
+            { code: btoa(code.value) },
             d=>{
                 toast.success(`验证成功`)
 

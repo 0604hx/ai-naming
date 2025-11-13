@@ -56,7 +56,7 @@ export const readModules = ()=>{
     //配置fill色
     for(let m of mods){
         if(m.icon && m.icon.fill == null)
-            m.icon.fill = new TinyColor(m.icon.color).darken(15).toHexString()
+            m.icon.fill = new TinyColor(m.icon.color).darken(30).toHexString()
     }
 
     return mods
@@ -172,6 +172,7 @@ export const createRandomNames = size=>{
  */
 export const runModule = async (id, coupon, params={}, ip=null)=>{
     logger.info(`调用 ${id} 取名...`)
+    global.isDebug && logger.debug(`参数`, params)
 
     let mod = await getModule(id)
     if(!(mod && mod.prompt))
@@ -182,7 +183,7 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
         throw `积分券 ${coupon} 余额不足`
 
     //构建提示语句
-    const prompt = Mustache.render(`${mod.prompt}`, {...params, limit: mod.limit })
+    const prompt = Mustache.render(mod.prompt, {...params, limit: mod.limit })
     global.isDebug && logger.debug(`[提示词] ${prompt}`)
 
     if(config.app.useMock){

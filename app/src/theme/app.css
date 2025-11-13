@@ -115,6 +115,9 @@
         line-height: 110% !important;
     }
 }
+.mini .wd-button, .mini.wd-button {
+    height: 20px !important;
+}
 
 /* app 相关 */
 .mod-card {

@@ -3,7 +3,7 @@ import { assert, ok } from "../common";
 import { delByID, exec, query } from "../db";
 import { CONFIG_FILE, COUPON, LLM_LOG, NAME } from "../fields";
 import { createCoupon } from "../service/CouponService";
-import { uuid } from "../common/tool";
+import { removeTrailingChar, uuid } from "../common/tool";
 import logger from "../common/logger";
 import config from "../config";
 import { createJwtToken, sm4Encrypt } from "../common/secret";
@@ -95,7 +95,10 @@ export default app=>{
         delByID(COUPON, id)
     })
 
-    app.post("/master/coupon-share", ({ server, body:{id}})=>ok(`${server.url}s/${id}`))
+    app.post("/master/coupon-share", ({ server, body:{id}})=>{
+        let host = removeTrailingChar(config.server || server.url.toString())
+        return ok(`${host}/s/${id}`)
+    })
 
     app.post("/master/log-list", ({ body:{pageSize=20,page=1}})=>{
         return ok(query(`SELECT * FROM ${LLM_LOG} ORDER BY id DESC LIMIT ?,?`, (page-1)*pageSize, pageSize))

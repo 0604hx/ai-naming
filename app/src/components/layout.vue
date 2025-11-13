@@ -15,8 +15,8 @@
         <wd-toast />
         <wd-message-box />
         <wd-notify />
-    </view>
     <!-- </wd-config-provider> -->
+    </view>
 </template>
 
 <script setup>
@@ -61,10 +61,7 @@
         { title:"我的", icon:"user", url:"/pages/mine/index" }
     ]
 
-    const onTabChange = ({ value })=>{
-        console.debug(`点击底部导航栏`, value)
-        router.replace(tabs[value].url)
-    }
+    const onTabChange = ({ value })=>router.replace(tabs[value].url)
     const goBack = ()=>{
         if(getCurrentPages().length > 1)
             return router.back()

@@ -22,3 +22,28 @@
 ### 示例
 
 * **宝宝取名**：你是熟读《易经》、唐诗宋词、诗经楚辞并精通国学的大师，请帮2025-10-28出生的章姓男宝宝取个名字，以“德”为中间固定字。返回2个结果（每行一个），格式为：姓名 评分 解析，示例：李白 100 “白”有纯洁、明亮之意,寓意人格高洁
+
+
+## 部署及更新
+
+部署详见：[PM2 部署 Bun.js 应用及配置 Let‘s Encrypt 免费 HTTPS 证书](https://blog.csdn.net/ssrc0604hx/article/details/154685766)
+
+### 前端更新
+
+```shell
+# 本地构建
+bun app:h5:build
+
+# 将 server/dist/www.zip 上传到服务器
+cp /app/naming && rm -rf h5/* && unzip -o www.zip -d h5
+```
+
+### 后端更新
+
+```shell
+# 本地构建
+bun serve:build
+
+# 将 server/dist/ai-naming.js 上传到服务器
+pm2 restart naming
+```

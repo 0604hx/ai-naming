@@ -17,13 +17,18 @@
         </wd-card>
 
         <wd-card>
-            <wd-cell-group title="取名记录" use-slot border>
-                <template #value>
+            <wd-cell-group use-slot>
+                <template #title>
+                    取名记录
                     <wd-text text="点击可复制" size="12px"></wd-text>
                 </template>
+                <template #value>
+                    <wd-button class="mini" @click="clear" size="small" type="text">清空</wd-button>
+                    <!-- <wd-icon name="delete-thin" size="12px" @click="clear"></wd-icon> -->
+                </template>
 
-                <wd-tabs class="mini">
-                    <wd-tab v-for="(items, index) in names" :key="index" :title="index" :badge-props="{ modelValue: items.length }">
+                <wd-tabs class="mini" v-model="nameTab">
+                    <wd-tab v-for="(items, index) in names" :name="index" :title="index" :badge-props="{ modelValue: items.length }">
                         <wd-cell class="logview" v-for="item in items" :title="item.text" :label="item.desc"
                             clickable @click="copy(item)" :title-width center />
                     </wd-tab>
@@ -42,7 +47,7 @@
 </template>
 
 <script setup>
-    import { RESULT, date, getNames } from '@U'
+    import { RESULT, date, getNames, clearNames } from '@U'
     import { useDataStore } from '@/store'
 
     const dataStore = useDataStore()
@@ -53,14 +58,34 @@
     const titleWidth = "100%"
     let coupon = ref({})
     let names = ref([])
+    let nameTab = ref(0)
 
     const toCoupon = ()=> router.push("/pages-sub/coupon")
-    const help = ()=> message.alert({ title:"帮助与客服", msg:`更多帮助信息请联系⌈咸鱼⌋`})
+    const help = ()=> message.alert({ title:"帮助与客服", msg:`更多帮助信息请联系⌈咸鱼⌋或添加微信 ironman_1024`})
 
+    const refreshNames = items=>{
+        // 按 mod 分组
+        let nameTabs = {}
+        for(let item of items){
+            if(!nameTabs[item.mod])
+                nameTabs[item.mod] = []
+            nameTabs[item.mod].push(item)
+        }
+        names.value = nameTabs
+    }
     const copy = row=>{
         navigator.clipboard.writeText(`${row.text}，${row.desc}`)
         toast.success(`⌈${row.text}⌋已复制`)
     }
+    const clear = ()=> message
+        .confirm({
+            msg: `请选择要清空的范围？`,
+            title: `清空本地缓存`,
+            confirmButtonText:"仅当前标签",
+            cancelButtonText: "全部"
+        })
+        .then(()=> clearNames(nameTab.value, refreshNames))
+        .catch(()=> clearNames(null, refreshNames))
 
     onMounted(() => {
         if(dataStore.coupon){
@@ -69,16 +94,7 @@
             })
         }
 
-        getNames().then(items=>{
-            // 按 mod 分组
-            let nameTabs = {}
-            for(let item of items){
-                if(!nameTabs[item.mod])
-                    nameTabs[item.mod] = []
-                nameTabs[item.mod].push(item)
-            }
-            names.value = nameTabs
-        })
+        getNames().then(refreshNames)
     })
 </script>
 

@@ -42,10 +42,14 @@ const NAMES = "names"
  * @param {Number} max 最大存储数据
  */
 export const saveNames = (names, max=50)=> getNames().then(items=>{
-    console.debug(`旧列表 ${items.length} 个...`)
-
     let newItems = Array.isArray(names)?names:[names]
     for(let item of newItems){
+        //判断是否重复
+        for(let i=0;i<items.length;i++){
+            if(items[i].mod == item.mod && items[i].text == item.text){
+                items.splice(i, 1)
+            }
+        }
         items.unshift(item)
     }
     if(items.length>max)
@@ -63,4 +67,18 @@ export const getNames = ()=> new Promise(ok=>{
         success: ({ data })=>ok(data),
         fail:()=>ok([])
     })
+})
+
+/**
+ *
+ * @param {String} mod
+ */
+export const clearNames = (mod, ok)=> getNames().then(items=>{
+    if(!items.length)
+        return
+
+    items = mod==null?[]:items.filter(v=>v.mod!=mod)
+    uni.setStorage({ key:NAMES, data: items })
+
+    ok(items)
 })

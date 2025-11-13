@@ -17,7 +17,11 @@
         </wd-card>
 
         <wd-table :data :border="false">
-            <wd-table-col prop="id" label="编号" width="28%" />
+            <wd-table-col prop="id" label="编号" width="28%">
+                <template #value="{row}">
+                    <view @click="copy(row.id)">{{ row.id }}</view>
+                </template>
+            </wd-table-col>
             <wd-table-col prop="quota" label="余额" width="15%">
                 <template #value="{row}">
                     <view @click="quota(row)">{{ row.quota }}</view>
@@ -28,7 +32,7 @@
             </wd-table-col>
             <wd-table-col label="操作" width="12%" align="center" prop="">
                 <template #value="{row, index}">
-                    <wd-icon name="share" @click="copy(row)"></wd-icon>
+                    <wd-icon name="share" @click="share(row)"></wd-icon>
                     <wd-icon name="delete" class="ml-2" @click="remove(row, index)"></wd-icon>
                 </template>
             </wd-table-col>
@@ -77,7 +81,11 @@
         })
         .catch(()=>{})
 
-    const copy = row=> RESULT("/master/coupon-share", {id:row.id},d=>{
+    const copy = text=>{
+        navigator.clipboard.writeText(text)
+        toast.success(`编号已复制`)
+    }
+    const share = row=> RESULT("/master/coupon-share", {id:row.id},d=>{
         navigator.clipboard.writeText(d.data)
         toast.success(`分享链接已复制`)
     })

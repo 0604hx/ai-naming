@@ -8,7 +8,7 @@ let db = undefined
 export const setupDB = ()=>{
     if(db == undefined){
         db = new Database(config.db.file)
-        logger.info(`连接数据文件 ${config.db.file} ...`)
+        logger.info(`✓ 连接数据文件 ${config.db.file}`)
     }
 }
 

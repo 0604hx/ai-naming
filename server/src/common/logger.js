@@ -2,7 +2,7 @@
  * @Author: 集成显卡
  * @Date: 2022-12-02 10:05:37
  * @Last Modified by: 集成显卡
- * @Last Modified time: 2025-10-22 15:38:22
+ * @Last Modified time: 2025-11-11 18:50:14
  */
 
 import { existsSync, mkdirSync } from "fs"
@@ -44,4 +44,4 @@ const buildLogger = (withFile=true)=>{
 }
 
 // 测试环境下只使用 控制台Logger
-export default buildLogger(global.isPro == true)
+export default buildLogger(global.isPro == true || process.env.NODE_ENV=='production')

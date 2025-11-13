@@ -2,7 +2,7 @@
     "globalStyle": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "AI取名大师",
-        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "#ff0000",
         "navigationBarTextStyle": "black"
     },
     "easycom": {

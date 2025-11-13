@@ -3,7 +3,7 @@ import pc from 'picocolors'
 
 const VERSION = ()=>{
     let now = new Date
-    return `v${now.getUTCFullYear() - 2000}.${now.getUTCMonth() + 1}.${now.getUTCDate()}`
+    return `v${now.getUTCFullYear() - 2000}.${now.getUTCMonth() + 1}.${now.getUTCDate()}-${now.getHours()}${now.getMinutes()}`
 }
 
 const ENV = "production"

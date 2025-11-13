@@ -9,8 +9,32 @@ const config = {
     port: 10002,
     cors: !global.isPro ?? false,
     dataDir: "data",        //附近保存路径
+    /**
+     * 静态资源处理
+     *
+     * nginx 处理
+     *
+        # 让 Nginx 直接托管 /h5 （示例） 下的文件
+        location /h5/ {
+            root /path/to/www;
+            try_files $uri $uri/ /h5/index.html;
+
+            # 缓存 1 天
+            expires 1d;
+
+            # 自动生成 ETag
+            etag on;
+
+            # 推荐加上 gzip 支持
+            gzip on;
+            gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+        }
+     */
+    wwwEnable: true,        //是否启用静态资源，如果前置 nginx，建议关闭此功能（nginx 性能更高更稳定）
     wwwDir: "h5",           //静态资源目录
-    wwwPrefix: "/h5/",       //静态资源前缀，默认 /
+    wwwPrefix: "/h5",       //静态资源前缀，默认 /，注意结尾无需填写 /
+    wwwCache: 86400,        //静态资源缓存，单位 秒，默认1天
+    wwwEtag: true,          //是否启用 etag 实体标签，用于判断缓存更新
     /**
      * 服务地址前缀，留空则使用请求的地址，通常用于页面跳转
      * 示例 http://localhost:10002/
@@ -31,7 +55,7 @@ const config = {
          * 初版配色："#BBDEFB","#D1C4E9","#FFCDD2"
          */
         // modColors:["#8A75AF","#D47A92","#CAE4E2","#D1C5A5","#CF9EA0","#E6D1D5","#9FB7BD"],
-        modColors:["#B3DEF7","#D2E7D3","#ABDADA","#F2E0D8","#BFE1E5","#E8EBEC","#E6D9EB"],
+        modColors:["#B3DEF7","#D2E7D3","#F6E0D8","#BFE1E5","#E3EACB","#E8EBEC","#E6D9EB"],
 
         /**
          * 大模型配置参数，参考 openAI SDK
@@ -43,7 +67,7 @@ const config = {
         llmMaxToken: 500,
 
         //通用提示词（添加在末尾），需要与解析程序配套😄
-        prompt: `返回{{limit}}个结果（每行一个），格式为：姓名 评分 解析，示例：李白 100 “白”有纯洁、明亮之意,寓意人格高洁`
+        prompt: `返回{{limit}}个结果（每行一个），格式为：姓名 评分 解析，示例：李白 100 “白”有纯洁、明亮之意,寓意人格高洁。如果无法给出评分则写0！`
     },
     img: {
         toWebp: true,       //是否转换为 webp 格式
@@ -100,7 +124,7 @@ if(existsSync(configFile) && statSync(configFile).isFile()){
     }, 1000)
 
     //仅当生产模式才监听配置文件的变动
-    if(global.isPro)
+    if(global.isPro || process.env.NODE_ENV=='production')
         watch(configFile, onConfigChange)
 
     global.isDebug && logger.debug(`从${configFile}中读取配置文件`, fileCfg)

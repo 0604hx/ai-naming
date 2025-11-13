@@ -4,7 +4,7 @@
             <wd-loading type="outline" />
         </view>
         <template v-else>
-            <Mod :bean plain :bg="true" border :iconSize="64" />
+            <Mod :bean plain :bg="uiStore.modBg" border :iconSize="64" />
 
             <template v-if="bean.params && bean.params.length">
                 <wd-card  style="padding-top: 12px;" class="formview">
@@ -18,7 +18,7 @@
                         -->
                         <wd-input v-if="item.type=='TEXT'" v-model="form[item.label]" :placeholder="tip(item)" :label="item.label" :label-width :required="item.required" />
                         <wd-cell v-else-if="item.type=='NUMBER'" :title="item.label" :title-width="labelWidth" :required="item.required">
-                            <wd-input-number v-model="form[item.label]" />
+                            <wd-input-number v-model="form[item.label]" :min="0" />
                         </wd-cell>
                         <wd-cell v-else-if="item.type=='RADIO'" :title="item.label" :title-width="labelWidth" :required="item.required">
                             <wd-radio-group shape="dot" v-model="form[item.label]">
@@ -26,7 +26,7 @@
                             </wd-radio-group>
                         </wd-cell>
                         <wd-datetime-picker v-else-if="item.type=='DATE'" type="date" v-model="form[item.label]" :required="item.required"
-                            :label="item.label" :label-width placeholder="请选择时间" />
+                            :label="item.label" :default-value="nowDate" :minDate :label-width placeholder="请选择时间" />
                         <wd-datetime-picker v-else-if="item.type=='TIME'" type="time" v-model="form[item.label]" :required="item.required"
                             :label="item.label" :label-width placeholder="请选择时间" />
                         <wd-select-picker v-else-if="item.type=='SELECT'" :label="item.label" :label-width :required="item.required"
@@ -39,7 +39,7 @@
                     <wd-button type="primary" size="large" @click="run" :round="false" block :loading>AI取名</wd-button>
                 </view>
 
-                <view class="text-center">
+                <view class="text-center p-1">
                     <wd-text text="特别申明：您的数据仅作为本次取名使用" size="12px"></wd-text>
                 </view>
             </template>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-    import { useDataStore } from '@/store'
+    import { useDataStore, useUIStore } from '@/store'
     import { date, RESULT, saveNames } from '@U'
 
     import Mod from '@C/mod.vue'
@@ -85,9 +85,12 @@
     const route = useRoute()
     const router = useRouter()
     const dataStore = useDataStore()
+    const uiStore = useUIStore()
 
     let id = null
     const labelWidth = "90px"
+    const nowDate = Date.now()
+    const minDate = Date.now()-50*365*24*60*60*1000
 
     let inited = ref(false)
     let loading = ref(false)
@@ -140,13 +143,16 @@
             "/run",
             { id, coupon: dataStore.coupon, params },
             d=>{
-                result.names = d.data
-                result.show = true
-
                 loading.value = false
 
                 if(d.data.length){
+                    result.names = d.data
+                    result.show = true
+
                     saveNames(d.data.map(v=> ({mod: bean.name, ...v})))
+                }
+                else{
+                    message.alert(`AI大模型未给出回应，本次不扣除积分，请重试`)
                 }
             }, ()=>{
                 loading.value = false

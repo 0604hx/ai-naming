@@ -32,7 +32,7 @@ export default app=>{
      */
     app.get("/s/:id", ({redirect, server, path, params:{ id }})=>{
         let host = removeTrailingChar(config.server || server.url.toString())
-        let url = `${host}${config.wwwPrefix}index.html/#/pages-sub/coupon?code=${id}`
+        let url = `${host}${config.wwwPrefix}/index.html/#/pages-sub/coupon?code=${id}`
 
         logger.info(`分享 ${path} 跳转到 ${url}`)
         return redirect(url)

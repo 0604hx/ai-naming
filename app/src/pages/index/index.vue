@@ -2,7 +2,7 @@
     <Layout title="AI取名大师" :back="false" :tabbar="0" :top="15">
         <wd-row :gutter="16" class="mod-row">
             <wd-col v-for="item in items" :span="(item.col || 1)*12">
-                <Mod :bean="item" @click="jump(item)"/>
+                <Mod :bean="item" :bg="uiStore.modBg" @click="jump(item)"/>
             </wd-col>
         </wd-row>
         <view class="text-center p-1">
@@ -13,8 +13,10 @@
 
 <script setup>
     import { RESULT, adminHomePage } from '@U'
+    import { useUIStore } from '@/store'
     import Mod from '@C/mod.vue'
 
+    const uiStore = useUIStore()
     const router = useRouter();
 
     const text = `欢迎使用，当前版本${__APP_VERSION__}`
