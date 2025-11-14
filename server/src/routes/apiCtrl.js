@@ -2,12 +2,42 @@ import Elysia from "elysia";
 import { getModule, listModule, runModule } from "../service/ModuleService";
 import { ok } from "../common";
 import logger from "../common/logger";
-import { getCoupon } from "../service/CouponService";
+import { createCoupon, getCoupon } from "../service/CouponService";
 import config from "../config";
-import { removeTrailingChar } from "../common/tool";
+import { removeTrailingChar, uuid as createUUID } from "../common/tool";
+import { count, insertNew } from "../db";
+import { TRIAL } from "../fields";
+import { Trial } from "../beans";
+import { ipToRegion } from "../common/web";
 
 const moduleAll     = async ()=> ok(await listModule())
 const moduleById    = async ({ params:{ id }})=>ok(await getModule(id))
+
+/**
+ * 判断是否具备试用资格
+ * @param {String} uuid
+ * @returns {Number} 试用积分数，-1=未开启，0=无可用，-2=免费额度已用完
+ */
+const checkTril = uuid=>{
+    let { trialSize, trialPreDay } = config.app
+    if(trialSize<=0)
+        return -1
+
+    // 如果已经存在过，则不能再试用
+    if(count(TRIAL, "id=?", uuid)>0)
+        return 0
+
+    // 判断是否超过试用每日限额
+    if(trialPreDay > 0){
+        let now = new Date()
+        now.setHours(0, 0, 0, 0)
+
+        if(count(TRIAL, "addOn>=?", now.getTime())>=trialPreDay)
+            throw -2
+    }
+    return trialSize
+}
+
 /**
  * @param {Elysia} app
  */
@@ -52,5 +82,33 @@ export default app=>{
             throw `该积分券余额不足`
 
         return ok(coupon)
+    })
+
+    app.post("/trial/check", ({ body:{ uuid }})=> ok(checkTril(uuid)) )
+    app.post("/trial/:uuid", async ({ server, request, headers, params:{ uuid } })=>{
+        const trialSign = checkTril(uuid)
+
+        if(trialSign == -1)     throw `未开放试用`
+        if(trialSign == -2)     throw `今日试用名额已用完`
+        if(trialSign <= 0)      throw `客户端已试用`
+
+        let ip = server?.requestIP(request).address
+        let platform = headers['platform']
+        let sys = headers['system']
+
+        logger.info(`客户端 ${ip}(${platform}/${sys}) 尝试生产试用积分券 coupon=${trialSign}`)
+
+        let cid = createUUID(config.app.couponLen)
+        //创建积分券
+        createCoupon({ id: cid, quota: trialSign })
+
+        logger.info(`试用积分券 ${cid} 已生成...`)
+
+        let region = await ipToRegion(ip)
+
+        insertNew(TRIAL, Trial.parse({ id: uuid, cid, region, platform, sys, ip, addOn: Date.now() }))
+        logger.info(`保存试用信息 ${uuid} (region=${region} platform=${platform}) sys=${sys}`)
+
+        return ok(cid)
     })
 }

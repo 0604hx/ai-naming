@@ -23,7 +23,7 @@
                 主题色
             </view>
             <wd-grid :column="5" clickable>
-                <wd-grid-item v-for="item in colors" use-icon-slot :text="item" :icon-size="colorPop.size" @itemclick="themeSelect(item)">
+                <wd-grid-item v-for="item in colors" use-icon-slot :text="item" :icon-size="colorPop.size" @itemclick="onColorSelect(item)">
                     <template #icon><view :style="{ width: colorPop.size, height:colorPop.size, borderRadius: `4px`, background: item}" /></template>
                 </wd-grid-item>
             </wd-grid>
@@ -32,7 +32,7 @@
                 <view>自定义颜色</view>
                 <wd-input type="text" v-model="colorPop.custom" :maxlength="6" placeholder="请输入HEX颜色代码">
                     <template #prefix><wd-text text="#" /></template>
-                    <template #suffix><wd-button size="small" type="primary" @click="onCOlorSelect">确定</wd-button></template>
+                    <template #suffix><wd-button size="small" type="primary" @click="onColorSelect()">确定</wd-button></template>
                 </wd-input>
             </view>
         </wd-popup>
@@ -52,7 +52,7 @@
 
     const open = ()=> colorPop.show = true
     const toTheme = ()=> colorPop.show=true
-    const onCOlorSelect = v=>{
+    const onColorSelect = v=>{
         let color = v || (colorPop.custom?`#${colorPop.custom}`:undefined)
         if(!color)  return toast.warning(`请输入颜色代码`)
 

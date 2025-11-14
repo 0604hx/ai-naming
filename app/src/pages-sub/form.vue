@@ -4,7 +4,7 @@
             <wd-loading type="outline" />
         </view>
         <template v-else>
-            <Mod :bean plain :bg="uiStore.modBg" border :iconSize="64" />
+            <Mod :bean plain :bg="uiStore.modBg" :border="false" :iconSize="64" />
 
             <template v-if="bean.params && bean.params.length">
                 <wd-card  style="padding-top: 12px;" class="formview">
@@ -16,22 +16,23 @@
                         临时方案：
                             使用代码自行控制输入长度
                         -->
-                        <wd-input v-if="item.type=='TEXT'" v-model="form[item.label]" :placeholder="tip(item)" :label="item.label" :label-width :required="item.required" />
+                        <wd-input v-if="item.type=='TEXT'" v-model="form[item.label]" :placeholder="tip(item)" :label="item.label"
+                            :label-width :required="item.required" :marker-side />
                         <wd-cell v-else-if="item.type=='NUMBER'" :title="item.label" :title-width="labelWidth" :required="item.required">
-                            <wd-input-number v-model="form[item.label]" :min="0" />
+                            <wd-input-number v-model="form[item.label]" :min="0" :marker-side  />
                         </wd-cell>
-                        <wd-cell v-else-if="item.type=='RADIO'" :title="item.label" :title-width="labelWidth" :required="item.required">
+                        <wd-cell v-else-if="item.type=='RADIO'" :title="item.label" :title-width="labelWidth" :required="item.required" :marker-side >
                             <wd-radio-group shape="dot" v-model="form[item.label]">
                                 <wd-radio v-for="opt in item.items" :value="opt">{{ opt }}</wd-radio>
                             </wd-radio-group>
                         </wd-cell>
                         <wd-datetime-picker v-else-if="item.type=='DATE'" type="date" v-model="form[item.label]" :required="item.required"
-                            :label="item.label" :default-value="nowDate" :minDate :label-width placeholder="请选择时间" />
+                            :label="item.label" :default-value="nowDate" :minDate :label-width placeholder="请选择时间" :marker-side  />
                         <wd-datetime-picker v-else-if="item.type=='TIME'" type="time" v-model="form[item.label]" :required="item.required"
-                            :label="item.label" :label-width placeholder="请选择时间" />
+                            :label="item.label" :label-width placeholder="请选择时间" :marker-side  />
                         <wd-select-picker v-else-if="item.type=='SELECT'" :label="item.label" :label-width :required="item.required"
                             filterable :type="item.multiple==true?'checkbox':'radio'"
-                            :columns="buildOption(item.items)" v-model="form[item.label]" />
+                            :columns="buildOption(item.items)" v-model="form[item.label]" :marker-side />
                     </template>
                 </wd-card>
 
@@ -88,6 +89,7 @@
     const uiStore = useUIStore()
 
     let id = null
+    const markerSide = "after"
     const labelWidth = "90px"
     const nowDate = Date.now()
     const minDate = Date.now()-50*365*24*60*60*1000

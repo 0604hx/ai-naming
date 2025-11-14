@@ -59,6 +59,15 @@ export const tableSchemas = [
         hot INTEGER DEFAULT 0,
         addOn INTEGER,
         PRIMARY KEY (name, mod)
+    );`,
+    `CREATE TABLE IF NOT EXISTS trial (
+        id TEXT PRIMARY KEY NOT NULL,
+        cid TEXT DEFAULT NULL,
+        ip TEXT DEFAULT NULL,
+        region TEXT DEFAULT NULL,
+        platform TEXT DEFAULT NULL,
+        sys TEXT DEFAULT NULL,
+        addOn INTEGER
     );`
 ]
 export const otherSqls = [
@@ -94,6 +103,18 @@ export const Name = z.object({
     score: z.number().default(null),
     hot: z.number().default(0),
     addOn : z.number().default(null)
+})
+export const Trial = z.object({
+    id: z.string().default(null),
+    /**积分券ID */
+    cid: z.string().default(null),
+    ip: z.string().default(null),
+    region: z.string().default(null),
+    /**客户端平台 */
+    platform: z.string().default(null),
+    /**客户端操作系统 */
+    sys: z.string().default(null),
+    addOn: z.number().default(null)
 })
 
 
@@ -152,4 +173,5 @@ export const ModuleBeans = z.array(ModuleBean)
  * @typedef {z.infer<typeof Coupon>} CouponType
  * @typedef {z.infer<typeof LLMLog>} LLMLogType
  * @typedef {z.infer<typeof Name>} NameType
+ * @typedef {z.infer<typeof Trial>} TrialType
  */

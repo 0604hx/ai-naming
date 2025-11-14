@@ -43,6 +43,9 @@ const config = {
     server: "",
 
     app:{
+        trialSize: 5,           //试用积分，设置<=0时将不启用
+        trialPreDay: 10,        //每天最多允许试用数，超过则提示今日试用名额已用完，设置<=0则无限制
+
         couponLen: 6,           //积分券ID长度
         couponQuota: 10,        //默认积分券额度
         showScore: true,        //是否回显名称得分，配置为 false 则结果不会返回 score 值

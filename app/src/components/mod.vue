@@ -6,8 +6,8 @@
                 <view class="title">{{bean.name}}</view>
                 <view>{{bean.desc}}</view>
                 <view v-if="plain">
-                    <wd-tag type="primary" plain>每次消耗{{bean.price}}积分</wd-tag>
-                    <wd-tag type="success" class="ml-2" plain>每次生成{{bean.limit}}个结果</wd-tag>
+                    <wd-tag plain>每次消耗{{bean.price}}积分</wd-tag>
+                    <wd-tag class="ml-2" plain>每次生成{{bean.limit}}个结果</wd-tag>
                 </view>
             </view>
         </view>

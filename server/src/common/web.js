@@ -143,3 +143,39 @@ export const initWebApp = ()=>{
 
     return app
 }
+
+/**
+ * 根据IP地址查询归属地（国家/省份），基于ip9服务
+ * @param {string} ip - 待查询的IP地址字符串（支持IPv4/IPv6，空字符串则查询当前服务器IP）
+ * @returns {Promise<string|null>} 归属地结果或null
+ *   - 若IP归属中国：返回省份（如"北京"、"江苏省"）
+ *   - 若IP归属其他国家：返回"国家-省份"（如"美国-加利福尼亚州"，省份不存在时仅返回国家）
+ *   - 失败情况（网络错误、超时、接口异常等）：返回null
+ */
+export const ipToRegion = async ip=>{
+    try {
+        // 构造请求 URL，处理空 IP 情况
+        const url = `https://ip9.com.cn/get?ip=${encodeURIComponent(ip || '')}`
+
+        // 发起请求，设置超时时间（5秒）
+        const response = await fetch(url, { timeout: 5000 })
+
+        // 状态码非 2xx 视为失败
+        if (!response.ok)
+            return null
+
+        const result = await response.json()
+
+        // 接口返回状态非成功或数据缺失时视为失败
+        if (result.ret !== 200 || !result.data || !result.data.country)
+            return null
+
+        const { country, prov } = result.data
+
+        // 按规则返回结果
+        return country === '中国' ? prov : `${country}${prov ? '-' + prov : ''}`
+    } catch (error) {
+        // 所有异常（网络错误、超时、JSON解析失败等）均返回 null
+        return null
+    }
+}

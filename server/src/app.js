@@ -9,7 +9,7 @@ import { writeFileSync } from 'node:fs'
 import config from "./config";
 import { setupRoutes } from "./routes";
 import logger from "./common/logger";
-import { exec, initDB, setupDB } from "./db";
+import { exec, initDB, query, setupDB } from "./db";
 import { tableSchemas } from './beans'
 import { cloneDeep } from 'lodash-es'
 import { createSm4Key, sm4Encrypt } from './common/secret'
@@ -50,7 +50,7 @@ if(cmdArgs[0] == '--db'){
 
     for(let sql of cmdArgs){
         logger.info(`执行 SQL 语句 >> ${sql}`)
-        let result = exec(sql)
+        let result = /^select /i.test(sql.trim()) ? query(sql) : exec(sql)
         logger.info(result)
     }
     process.exit(0)

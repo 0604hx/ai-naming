@@ -33,9 +33,9 @@
 
         if(dataStore.token)
             updateToken(dataStore.token)
-    });
+    })
     onShow(() => {
-    });
+    })
     onHide(() => {
-    });
+    })
 </script>
