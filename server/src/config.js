@@ -42,6 +42,8 @@ const config = {
      */
     server: "",
 
+    pageViewEnable: true,   //是否启用 PV 统计
+
     app:{
         trialSize: 5,           //试用积分，设置<=0时将不启用
         trialPreDay: 10,        //每天最多允许试用数，超过则提示今日试用名额已用完，设置<=0则无限制

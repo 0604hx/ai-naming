@@ -7,6 +7,11 @@
 .wd-card__content {
     padding-bottom: 8px;
 }
+.wd-cell.is-small {
+    --wot-cell-wrapper-padding: 6px;
+    /* --wot-cell-title-fs: 12px;
+    --wot-cell-value-fs: 12px; */
+}
 
 @media (prefers-color-scheme: light) {
     :root, page {
@@ -20,6 +25,9 @@
         color: #363636;
         background-color: var(--wot-card-bg, var(--wot-color-white, rgb(255, 255, 255)));
     }
+    .card.card-gray {
+        background-color: #D4D7DC;
+    }
 }
 @media (prefers-color-scheme: dark) {
     :root, page {
@@ -32,6 +40,9 @@
     }
     .card {
         background-color: var(--wot-dark-background2, #1b1b1b);
+    }
+    .card.card-gray {
+        background-color: #1A1C20;
     }
 }
 

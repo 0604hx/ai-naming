@@ -11,6 +11,7 @@
     import { RESULT } from '@U'
 
     const props = defineProps({
+        coupon:{type:Number, default: 10},
         type:{type:String, default:"primary"},
         icon:{type:String, default:null},
         size:{type:String, default:"medium"}
@@ -22,9 +23,9 @@
     const create = ()=> message
         .prompt({
             title: `创建积分券`,
-            msg: `默认额度为10`,
+            msg: `默认额度为${props.coupon}`,
             inputType: 'number',
-            inputValue: 10,
+            inputValue: props.coupon,
             confirmButtonText: "创建"
         })
         .then(({ value })=>{

@@ -9,8 +9,14 @@ import { count, insertNew } from "../db";
 import { TRIAL } from "../fields";
 import { Trial } from "../beans";
 import { ipToRegion } from "../common/web";
+import { onPageView } from "../service/SystemService";
 
-const moduleAll     = async ()=> ok(await listModule())
+const moduleAll     = async ({ server, request })=> {
+    let ip = server?.requestIP(request).address
+    onPageView(ip)
+
+    return ok(await listModule())
+}
 const moduleById    = async ({ params:{ id }})=>ok(await getModule(id))
 
 /**
