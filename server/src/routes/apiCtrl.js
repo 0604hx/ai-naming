@@ -8,11 +8,11 @@ import { removeTrailingChar, uuid as createUUID } from "../common/tool";
 import { count, insertNew } from "../db";
 import { TRIAL } from "../fields";
 import { Trial } from "../beans";
-import { ipToRegion } from "../common/web";
+import { getIp, ipToRegion } from "../common/web";
 import { onPageView } from "../service/SystemService";
 
-const moduleAll     = async ({ server, request })=> {
-    let ip = server?.requestIP(request).address
+const moduleAll     = async ctx => {
+    let ip = getIp(ctx)
     onPageView(ip)
 
     return ok(await listModule())
@@ -48,6 +48,7 @@ const checkTril = uuid=>{
  * @param {Elysia} app
  */
 export default app=>{
+    app.post("", ctx=>{ Code })
     app.post("/module/all", moduleAll),
     app.get("/module/all", moduleAll),
 
@@ -57,9 +58,10 @@ export default app=>{
     /**
      * 调用取名
      */
-    app.post("/run", async ({ server, request, body:{ id, coupon, params } })=> {
-        let ip = server?.requestIP(request)
-        return ok(await runModule(id, coupon, params, ip.address))
+    app.post("/run", async ctx => {
+        let ip = getIp(ctx)
+        let { body:{ id, coupon, params } } = ctx
+        return ok(await runModule(id, coupon, params, ip))
     })
 
     /**
@@ -79,9 +81,11 @@ export default app=>{
     /**
      * 领取积分券
      */
-    app.post("/coupon/claim", async ({ server, request, body:{ id }})=>{
-        let ip = server?.requestIP(request)
-        logger.info(`客户端 ${ip.address} 请求领取积分券 ${id}`)
+    app.post("/coupon/claim", async ctx=>{
+        let ip = getIp(ctx)
+        logger.info(`客户端 ${ip} 请求领取积分券 ${id}`)
+
+        let { body:{ id }} = ctx
 
         let coupon = getCoupon(id)
         if(coupon.quota<=0)
@@ -91,14 +95,16 @@ export default app=>{
     })
 
     app.post("/trial/check", ({ body:{ uuid }})=> ok(checkTril(uuid)) )
-    app.post("/trial/:uuid", async ({ server, request, headers, params:{ uuid } })=>{
+    app.post("/trial/:uuid", async ctx =>{
+        let { headers, params:{ uuid } } = ctx
+
         const trialSign = checkTril(uuid)
 
         if(trialSign == -1)     throw `未开放试用`
         if(trialSign == -2)     throw `今日试用名额已用完`
         if(trialSign <= 0)      throw `客户端已试用`
 
-        let ip = server?.requestIP(request).address
+        let ip = getIp(ctx)
         let platform = headers['platform']
         let sys = headers['system']
 

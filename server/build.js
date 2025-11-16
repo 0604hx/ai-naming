@@ -1,9 +1,11 @@
 import { formatFileSize } from "./src/common/tool"
 import pc from 'picocolors'
+import dayjs from "dayjs"
 
 const VERSION = ()=>{
-    let now = new Date
-    return `v${now.getUTCFullYear() - 2000}.${now.getUTCMonth() + 1}.${now.getUTCDate()}-${now.getHours()}${now.getMinutes()}`
+    // let now = new Date
+    // return `v${now.getUTCFullYear() - 2000}.${now.getUTCMonth() + 1}.${now.getUTCDate()}-${now.getHours()}${now.getMinutes()}`
+    return `v${dayjs(Date()).format("YYMMDD-HHmm")}`
 }
 
 const ENV = "production"

@@ -112,9 +112,11 @@ export const initWebApp = ()=>{
         }
     })
     // 统一鉴权
-    app.onBeforeHandle(({ route, headers, request, server })=>{
+    app.onBeforeHandle( ctx =>{
+        let route = ctx.route
+
         if(route?.startsWith && !route.startsWith("/common/") && !route.startsWith(config.wwwPrefix)){
-            let ua = headers[config.secret.header] || ""
+            let ua = ctx.headers[config.secret.header] || ""
 
             if(route.startsWith("/master/")){
                 if(route!='/master/verify'){
@@ -130,11 +132,11 @@ export const initWebApp = ()=>{
                     }
                 }
 
-                request.ip = server?.requestIP(request).address
+                ctx.request.ip = getIp(ctx)
                 return
             }
 
-            global.isDebug && logger.debug(`[${request.method}] ${route}`)
+            global.isDebug && logger.debug(`[${ctx.request.method}] ${route}`)
 
             if(!ua) return
         }
@@ -178,4 +180,20 @@ export const ipToRegion = async ip=>{
         // 所有异常（网络错误、超时、JSON解析失败等）均返回 null
         return null
     }
+}
+
+/**
+ * 获取真实的IP地址
+ * @param {import('elysia').Context} ctx
+ */
+export const getIp = ctx=>{
+    let { headers={} } = ctx
+    let xff = headers['x-forwarded-for']
+
+    let ip = (xff && xff.split(',')[0].trim()) || headers['x-real-ip']
+    if(!ip)
+        ip = ctx.server.requestIP(ctx.request).address
+
+    // Bun 可能会带 ::ffff: （兼容 IPv6）
+    return ip?.replace(/^::ffff:/, '')
 }

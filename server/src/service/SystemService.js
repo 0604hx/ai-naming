@@ -18,6 +18,7 @@ export const onPageView = ip =>new Promise(()=>{
     if(!config.pageViewEnable)  return
 
     pageView.set(ip, (pageView.get(ip)||0) + 1)
+    console.debug("记录IP", ip)
 })
 
 export const dashboard = ()=> withCache('dashboard', async ()=>{
