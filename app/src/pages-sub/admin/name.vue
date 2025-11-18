@@ -2,16 +2,16 @@
     <AdminLayout title="名字管理" :tabbar="2" :top="0">
         <wd-card title="条件筛选" style="margin: 10px 0px 10px 0px;">
             <wd-row :gutter="10">
-                <wd-col :span="12"><wd-input :size placeholder="名称" v-model="form.name"/></wd-col>
-                <wd-col :span="12"><wd-input :size placeholder="模块" v-model="form.mod"/></wd-col>
+                <wd-col :span="12"><wd-input :size="size" placeholder="名称" v-model="form.name"/></wd-col>
+                <wd-col :span="12"><wd-input :size="size" placeholder="模块" v-model="form.mod"/></wd-col>
             </wd-row>
 
             <template #footer>
-                <wd-button type="primary" :loading :size icon="search" @click="refresh" style="margin-left: 10px;">检索</wd-button>
+                <wd-button type="primary" :loading="loading" :size="size" icon="search" @click="refresh" style="margin-left: 10px;">检索</wd-button>
             </template>
         </wd-card>
 
-        <wd-table :data :border="false">
+        <wd-table :data="data" :border="false">
             <wd-table-col prop="name" label="名字" width="18%" />
             <wd-table-col prop="mod" label="模块" width="15%" />
             <wd-table-col prop="score" label="评分" width="14%" />

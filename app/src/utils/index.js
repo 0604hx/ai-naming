@@ -4,7 +4,7 @@ export * from './http'
 export * from './notice'
 export * from './date'
 
-export const homePage = "/pages/index/index"
+export const homePage = "/pages/index"
 export const adminHomePage = "/pages-sub/admin/index"
 export const adminPwdPage = "/pages-sub/admin/pwd"
 

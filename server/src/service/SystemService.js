@@ -5,6 +5,7 @@ import { datetime } from "../common/date";
 import config from "../config";
 import { count, query } from "../db";
 import { COUPON, LLM_LOG, NAME, TRIAL } from "../fields";
+import logger from '../common/logger';
 
 /**@type {Map<String, Number>} */
 const pageView = new Map()
@@ -18,7 +19,7 @@ export const onPageView = ip =>new Promise(()=>{
     if(!config.pageViewEnable)  return
 
     pageView.set(ip, (pageView.get(ip)||0) + 1)
-    console.debug("记录IP", ip)
+    global.isDebug && logger.debug(`[PageView] 记录IP ${ip}=${pageView.get(ip)}`)
 })
 
 export const dashboard = ()=> withCache('dashboard', async ()=>{
@@ -44,4 +45,4 @@ export const dashboard = ()=> withCache('dashboard', async ()=>{
         'pv'                : Array.from(pageView.values()).reduce((sum, v)=> sum+v),
         'uv'                : pageView.size
     }
-})
+}, 3600)

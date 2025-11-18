@@ -1,7 +1,7 @@
 <template>
     <view @click="create" class="inline">
         <slot>
-            <wd-button :icon :size :type>创建积分券</wd-button>
+            <wd-button :icon="icon" :size="size" :type="type">创建积分券</wd-button>
         </slot>
     </view>
     <wd-toast />

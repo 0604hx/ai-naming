@@ -18,6 +18,8 @@
         "app:h5": "bun --cwd app dev:h5",
         "app:h5:build": "bun --cwd app build:h5",
         "app:h5:build:dev": "bun --cwd app build:h5:dev",
+        "app:weapp": "bun --cwd app dev:weapp",
+        "app:weapp:build": "bun --cwd app build:weapp",
         "zip": "bun --cwd app zip:h5"
     },
     "dependencies": {

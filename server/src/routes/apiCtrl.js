@@ -60,7 +60,7 @@ export default app=>{
      */
     app.post("/run", async ctx => {
         let ip = getIp(ctx)
-        let { body:{ id, coupon, params } } = ctx
+        let { id, coupon, params } = ctx.body
         return ok(await runModule(id, coupon, params, ip))
     })
 
@@ -82,10 +82,10 @@ export default app=>{
      * 领取积分券
      */
     app.post("/coupon/claim", async ctx=>{
+        let { id } = ctx.body
         let ip = getIp(ctx)
-        logger.info(`客户端 ${ip} 请求领取积分券 ${id}`)
 
-        let { body:{ id }} = ctx
+        logger.info(`客户端 ${ip} 请求领取积分券 ${id}`)
 
         let coupon = getCoupon(id)
         if(coupon.quota<=0)

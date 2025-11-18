@@ -30,7 +30,7 @@
                 <wd-tabs class="mini" v-model="nameTab">
                     <wd-tab v-for="(items, index) in names" :name="index" :title="index" :badge-props="{ modelValue: items.length }">
                         <wd-cell class="logview" v-for="item in items" :title="item.text" :label="item.desc"
-                            clickable @click="copy(item)" :title-width center />
+                            clickable @click="copy(item)" title-width="100%" center />
                     </wd-tab>
                 </wd-tabs>
             </wd-cell-group>
@@ -55,7 +55,6 @@
     const toast = useToast()
     const router = useRouter()
 
-    const titleWidth = "100%"
     let coupon = ref({})
     let names = ref([])
     let nameTab = ref(0)

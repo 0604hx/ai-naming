@@ -7,7 +7,7 @@
             <wd-input type="text" size="large" no-border v-model="code" clearable show-password placeholder="请输入管理员密码..." />
         </view>
         <view class="p15 pt-1">
-            <wd-button type="primary" size="large" @click="login" :round="false" block :loading>登录</wd-button>
+            <wd-button type="primary" size="large" @click="login" :round="false" block :loading="loading">登录</wd-button>
         </view>
     </AdminLayout>
 </template>

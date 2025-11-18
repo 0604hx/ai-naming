@@ -4,7 +4,7 @@
             <wd-input type="text" size="large" no-border v-model="code" center clearable placeholder="请输入券码..." />
         </view>
         <view class="p15 pt-1">
-            <wd-button type="primary" size="large" @click="confirm" :round="false" block :loading>领取积分券</wd-button>
+            <wd-button type="primary" size="large" @click="confirm()" :round="false" block :loading="loading">领取积分券</wd-button>
         </view>
     </Layout>
 </template>

@@ -4,11 +4,11 @@
 
         <wd-row :gutter="16" class="mod-row">
             <wd-col v-for="item in items" :span="(item.col || 1)*12">
-                <Mod :bean="item" :bg="uiStore.modBg" @click="jump(item)"/>
+                <Mod :bean="item" :bg="uiStore.modBg" @tap="jump(item)"/>
             </wd-col>
         </wd-row>
         <view class="text-center p-1">
-            <wd-text @longpress="toAdminHome" @dblclick="toAdminHome" :text size="12px" />
+            <wd-text @click="onClick" :text size="12px" />
         </view>
     </Layout>
 </template>
@@ -27,16 +27,26 @@
     const trialView = ref()
     const items = ref([])
 
-    const jump = item=>router.push(`/pages-sub/form?id=${item.id}`)
-    const toAdminHome =()=> router.replace(adminHomePage)
+    const jump = item=>{
+        console.debug("跳转", item)
+        router.push(`/pages-sub/form?id=${item.id}`)
+    }
 
-    onMounted(() => {
-        RESULT("/module/all", {}, d=> {
-            items.value = d.data
+    let lastTime = 0
+    const onClick = ()=>{
+        const now = Date.now()
+        if(now - lastTime < 250){
+            //处理双击
+            router.replace(adminHomePage)
+        }
+        lastTime = now
+    }
 
-            trialView.value.check()
-        })
-    })
+    onMounted(() => RESULT("/module/all", {}, d=> {
+        items.value = d.data
+
+        trialView.value.check()
+    }))
 </script>
 
 <style scoped>

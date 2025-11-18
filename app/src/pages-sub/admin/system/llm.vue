@@ -9,10 +9,10 @@
         <wd-cell-group title="访问令牌" >
             <wd-input v-model="llm.key" class="ml-4 mr-4" placeholder="对应参数 apiKey" clearable/>
         </wd-cell-group>
-        <wd-cell title="TOKEN阈值" class="mt-2" :size :title-width="labelWidth">
+        <wd-cell title="TOKEN阈值" class="mt-2" :size="size" :title-width="labelWidth">
             <wd-input-number v-model="llm.maxToken" :step="100" :min="0" :max="5000"/>
         </wd-cell>
-        <wd-button class="mt-2" type="primary" size="large" @click="save" :round="false" block :loading>保存配置</wd-button>
+        <wd-button class="mt-2" type="primary" size="large" @click="save" :round="false" block :loading="loading">保存配置</wd-button>
     </view>
 
     <view class="card card-info">

@@ -58,7 +58,7 @@
 
     const tabs = [
         { title:"首页", icon:"home", url:homePage },
-        { title:"我的", icon:"user", url:"/pages/mine/index" }
+        { title:"我的", icon:"user", url:"/pages/mine" }
     ]
 
     const onTabChange = ({ value })=>router.replace(tabs[value].url)

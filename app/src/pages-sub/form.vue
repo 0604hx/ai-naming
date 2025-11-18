@@ -1,10 +1,10 @@
 <template>
-	<Layout :title>
+	<Layout :title="title">
         <view class="text-center" v-if="!inited">
             <wd-loading type="outline" />
         </view>
         <template v-else>
-            <Mod :bean plain :bg="uiStore.modBg" :border="false" :iconSize="64" />
+            <Mod :bean="bean" plain :bg="uiStore.modBg" :border="false" :iconSize="64" />
 
             <template v-if="bean.params && bean.params.length">
                 <wd-card  style="padding-top: 12px;" class="formview">
@@ -17,27 +17,27 @@
                             使用代码自行控制输入长度
                         -->
                         <wd-input v-if="item.type=='TEXT'" v-model="form[item.label]" :placeholder="tip(item)" :label="item.label"
-                            :label-width :required="item.required" :marker-side />
+                            :label-width="titleWidth" :required="item.required" :marker-side="markerSide" />
                         <wd-cell v-else-if="item.type=='NUMBER'" :title="item.label" :title-width="labelWidth" :required="item.required">
-                            <wd-input-number v-model="form[item.label]" :min="0" :marker-side  />
+                            <wd-input-number v-model="form[item.label]" :min="0" :marker-side="markerSide"  />
                         </wd-cell>
-                        <wd-cell v-else-if="item.type=='RADIO'" :title="item.label" :title-width="labelWidth" :required="item.required" :marker-side >
+                        <wd-cell v-else-if="item.type=='RADIO'" :title="item.label" :title-width="labelWidth" :required="item.required" :marker-side="markerSide" >
                             <wd-radio-group shape="dot" v-model="form[item.label]">
                                 <wd-radio v-for="opt in item.items" :value="opt">{{ opt }}</wd-radio>
                             </wd-radio-group>
                         </wd-cell>
                         <wd-datetime-picker v-else-if="item.type=='DATE'" type="date" v-model="form[item.label]" :required="item.required"
-                            :label="item.label" :default-value="nowDate" :minDate :label-width placeholder="请选择时间" :marker-side  />
+                            :label="item.label" :default-value="nowDate" :minDate="minDate" :label-width="titleWidth" placeholder="请选择时间" :marker-side="markerSide"  />
                         <wd-datetime-picker v-else-if="item.type=='TIME'" type="time" v-model="form[item.label]" :required="item.required"
-                            :label="item.label" :label-width placeholder="请选择时间" :marker-side  />
-                        <wd-select-picker v-else-if="item.type=='SELECT'" :label="item.label" :label-width :required="item.required"
+                            :label="item.label" :label-width="titleWidth" placeholder="请选择时间" :marker-side="markerSide"  />
+                        <wd-select-picker v-else-if="item.type=='SELECT'" :label="item.label" :label-width="titleWidth" :required="item.required"
                             filterable :type="item.multiple==true?'checkbox':'radio'"
-                            :columns="buildOption(item.items)" v-model="form[item.label]" :marker-side />
+                            :columns="buildOption(item.items)" v-model="form[item.label]" :marker-side="markerSide" />
                     </template>
                 </wd-card>
 
                 <view class="p15 pt-1">
-                    <wd-button type="primary" size="large" @click="run" :round="false" block :loading>AI取名</wd-button>
+                    <wd-button type="primary" size="large" @click="run" :round="false" block :loading="loading">AI取名</wd-button>
                 </view>
 
                 <view class="text-center p-1">
@@ -122,7 +122,7 @@
         for(let i=0;i<bean.params.length;i++){
             let p = bean.params[i]
             if(p.required === true && !form[p.label]){
-                toast.warning(`⌈${p.label}⌋为必填项`)
+                toast.warning(`${p.label}为必填项`)
                 return
             }
 
@@ -189,11 +189,9 @@
 </script>
 
 <style>
-    .formview {
-        .wd-radio {
-            /* line-height: 1.0; */
-            margin-top: 0px !important;
-            margin-bottom: 10px;
-        }
+    .formview .wd-radio {
+        /* line-height: 1.0; */
+        margin-top: 0px !important;
+        margin-bottom: 10px;
     }
 </style>

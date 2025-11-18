@@ -13,7 +13,7 @@
     },
     "pages": [
         {
-            "path": "pages/index/index",
+            "path": "pages/index",
             "type": "home",
             "layout": "tabbar",
             "style": {
@@ -22,7 +22,7 @@
             "name": "home"
         },
         {
-            "path": "pages/mine/index",
+            "path": "pages/mine",
             "type": "page",
             "layout": "tabbar",
             "style": {

@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="管理员首页" :back="false" :tabbar="0" :inited :top="0">
+    <AdminLayout title="管理员首页" :back="false" :tabbar="0" :inited="inited" :top="0">
         <view class="p-2">
             <wd-row :gutter="6">
                 <wd-col :span="16">
@@ -39,7 +39,7 @@
                 </wd-col>
             </wd-row>
 
-            <wd-cell-group title="访问统计" use-slot class="mt-4 ml-1 mr-1" :border>
+            <wd-cell-group title="访问统计" use-slot class="mt-4 ml-1 mr-1" :border="border">
                 <template #value>
                     <wd-text text='仅统计本地服务启动后' size="12px" />
                 </template>
@@ -50,19 +50,19 @@
                 </view>
             </wd-cell-group>
 
-            <wd-cell-group title="快捷功能" class="mt-2 ml-1 mr-1" :border>
+            <wd-cell-group title="快捷功能" class="mt-2 ml-1 mr-1" :border="border">
                 <view class="p15">
-                    <CreateCoupon :size :coupon="50" />
-                    <wd-button :size type="primary" @click="refreshModule" style="margin-left: 6px;">刷新模块缓存</wd-button>
+                    <CreateCoupon :size="size" :coupon="50" />
+                    <wd-button :size="size" type="primary" @click="refreshModule" style="margin-left: 6px;">刷新模块缓存</wd-button>
                 </view>
             </wd-cell-group>
 
-            <wd-cell-group title="系统监控" class="mt-2 ml-1 mr-1" :border>
-                <wd-cell title="后端启动" :size :value="bean.uptime" />
-                <wd-cell title="运行环境" :size :value="bean.os"/>
-                <wd-cell title="内存使用" :size :value="filesize(bean.mem)"/>
-                <wd-cell title="数据文件" :size :value="filesize(bean.db)" />
-                <wd-cell title="缓存大小" :size :value="filesize(bean.cache)" />
+            <wd-cell-group title="系统监控" class="mt-2 ml-1 mr-1" :border="border">
+                <wd-cell title="后端启动" :size="size" :value="bean.uptime" />
+                <wd-cell title="运行环境" :size="size" :value="bean.os"/>
+                <wd-cell title="内存使用" :size="size" :value="filesize(bean.mem)"/>
+                <wd-cell title="数据文件" :size="size" :value="filesize(bean.db)" />
+                <wd-cell title="缓存大小" :size="size" :value="filesize(bean.cache)" />
             </wd-cell-group>
 
             <view class="text-center p-3">

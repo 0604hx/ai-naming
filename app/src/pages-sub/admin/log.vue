@@ -1,6 +1,6 @@
 <template>
     <AdminLayout title="历史记录" :tabbar="3" :top="0">
-        <wd-table :data :border="false">
+        <wd-table :data="data" :border="false">
             <wd-table-col prop="id" label="ID" width="16%" />
             <wd-table-col prop="mid" label="模块" width="22%" />
             <wd-table-col prop="price" label="积分/令牌" width="22%">

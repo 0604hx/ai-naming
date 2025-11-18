@@ -121,10 +121,9 @@
 }
 .mini .wd-cell__wrapper {
     padding: 6px 0px 6px 0px !important;
-
-    .wd-cell__label {
-        line-height: 110% !important;
-    }
+}
+.mini .wd-cell__wrapper .wd-cell__label {
+    line-height: 110% !important;
 }
 .mini .wd-button, .mini.wd-button {
     height: 20px !important;

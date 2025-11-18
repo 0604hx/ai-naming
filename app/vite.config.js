@@ -4,6 +4,8 @@ import Uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
 import legacy from '@vitejs/plugin-legacy'
 
+import UniExpandVueBind from './script/plugin-expand-vue3-blind.js'
+
 import pkg from './package.json'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -14,6 +16,8 @@ const buildVersion = ()=>{
     return `v${now.getUTCFullYear() - 2000}.${now.getUTCMonth() + 1}.${now.getUTCDate()}`
 }
 const version = isProduction? buildVersion() : 'DEV'
+
+const H5 = "h5"
 
 /**
  * https://vitejs.dev/config/
@@ -39,10 +43,10 @@ export default async ({ mode }) => {
         // 配置别名
         resolve: {
             alias: {
-                '@' :   path.join(process.cwd(), './src'),
-                '@C':   path.join(process.cwd(), './src/components'),
-                '@SVG':   path.join(process.cwd(), './src/components/svg'),
-                '@U':   path.join(process.cwd(), './src/utils'),
+                '@' :       path.join(process.cwd(), './src'),
+                '@C':       path.join(process.cwd(), './src/components'),
+                '@SVG':     path.join(process.cwd(), './src/components/svg'),
+                '@U':       path.join(process.cwd(), './src/utils'),
             },
         },
         define:{
@@ -50,7 +54,7 @@ export default async ({ mode }) => {
         },
         // 插件注意： Unixx需要在Uni()之前引入
         plugins: [
-            process.env.UNI_PLATFORM === 'h5' &&
+            process.env.UNI_PLATFORM === H5 &&
             legacy({
                 targets: [
                     '> 0%',
@@ -63,6 +67,7 @@ export default async ({ mode }) => {
                 renderLegacyChunks: true,
             }),
             // UniLayouts(),
+            process.env.UNI_PLATFORM != H5 && UniExpandVueBind(),
             Uni(),
             AutoImport({
                 imports: [
@@ -109,6 +114,27 @@ export default async ({ mode }) => {
                     drop_debugger: true,
                 },
             },
-        },
+            // rollupOptions: {
+            //     output: {
+            //         // 强制统一提取三方库，避免非法 chunk path
+            //         manualChunks(id) {
+            //             console.debug("---------------", id)
+            //             if (id.includes('node_modules')) {
+            //                 return 'vendor';
+            //             }
+            //             if (id.includes('wot-design-uni')) {
+            //                 return 'wot-ui';
+            //             }
+            //         },
+            //         sanitizeFileName(name) {
+            //             return name.replace(/[^a-zA-Z0-9\-_.]/g, '_');
+            //         },
+            //         // 另外规范 chunk 文件名格式
+            //         chunkFileNames: 'chunks/[name]-[hash].js',
+            //         entryFileNames: 'entries/[name]-[hash].js',
+            //         assetFileNames: 'assets/[name]-[hash][extname]'
+            //     }
+            // }
+        }
     });
 };

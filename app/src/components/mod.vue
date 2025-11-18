@@ -1,7 +1,7 @@
 <template>
     <wd-card class="mod-card" :style="buildStyle()">
         <view v-if="plain || bean.col>1" class="content">
-            <component :is='buildSVG(bean)' />
+            <SvgIcon :bean :size="iconSize"/>
             <view>
                 <view class="title">{{bean.name}}</view>
                 <view>{{bean.desc}}</view>
@@ -13,7 +13,8 @@
         </view>
         <template v-else>
             <view class="content">
-                <component :is='buildSVG(bean)' />
+                <!-- <component :is='buildSVG(bean)' /> -->
+                <SvgIcon :bean :size="iconSize"/>
                 <view class="title">{{bean.name}}</view>
             </view>
             <view>{{bean.desc}}</view>
@@ -22,13 +23,7 @@
 </template>
 
 <script setup>
-    import BabySVG from '@SVG/baby.vue'
-    import ShopSVG from '@SVG/shop.vue'
-    import DogSVG from '@SVG/dog.vue'
-    import EditSVG from '@SVG/edit.vue'
-    import CreationSVG from '@SVG/creation.vue'
-    import VestSVG from '@SVG/vest.vue'
-    import TitleSVG from '@SVG/title.vue'
+    import SvgIcon from './svgIcon.vue'
 
     const props = defineProps({
         bean: {type:Object},
@@ -37,24 +32,6 @@
         border: {type:Boolean, default: false},
         iconSize: {type:Number, default: 48}
     })
-
-    const buildSVG = item=>{
-        let { color, svg, fill } = item.icon || {}
-        if(svg && svg.startsWith("<svg "))
-            return h('view', {class:"icon", innerHTML: svg })
-
-        return h(
-            item.id == 'baobao'? BabySVG:
-            item.id == 'dianpu'? ShopSVG:
-            item.id == 'chongwu'? DogSVG:
-            item.id == 'wangming'? VestSVG:
-            item.id == 'biming'? EditSVG:
-            item.id == 'zuopin'? CreationSVG:
-            item.id == 'wenzhang'? TitleSVG:
-            null,
-            { clazz:'icon', fill: fill || color, size: props.iconSize }
-        )
-    }
 
     const buildStyle = () => {
         let { color } = props.bean.icon || {}

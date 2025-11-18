@@ -191,8 +191,9 @@ export const getIp = ctx=>{
     let xff = headers['x-forwarded-for']
 
     let ip = (xff && xff.split(',')[0].trim()) || headers['x-real-ip']
-    if(!ip)
-        ip = ctx.server.requestIP(ctx.request).address
+    if(!ip){
+        ip = ctx.server?.requestIP(ctx.request).address
+    }
 
     // Bun 可能会带 ::ffff: （兼容 IPv6）
     return ip?.replace(/^::ffff:/, '')

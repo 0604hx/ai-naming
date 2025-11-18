@@ -2,7 +2,7 @@
     <AdminLayout title="积分券管理" :tabbar="1" :top="0">
         <wd-card title="条件筛选" style="margin: 10px 0px 10px 0px;">
             <wd-row :gutter="10">
-                <wd-col :span="12"><wd-input :size placeholder="编号" v-model="form.id"/></wd-col>
+                <wd-col :span="12"><wd-input :size="size" placeholder="编号" v-model="form.id"/></wd-col>
                 <wd-col :span="12">
                     <wd-cell label="仅显示有效">
                         <wd-switch size="20px" v-model="form.active" />
@@ -11,12 +11,12 @@
             </wd-row>
 
             <template #footer>
-                <CreateCoupon type="info" :size icon="add-circle" />
-                <wd-button type="primary" :loading :size icon="search" @click="refresh" style="margin-left: 10px;">检索</wd-button>
+                <CreateCoupon type="info" :size="size" icon="add-circle" />
+                <wd-button type="primary" :loading="loading" :size="size" icon="search" @click="refresh" style="margin-left: 10px;">检索</wd-button>
             </template>
         </wd-card>
 
-        <wd-table :data :border="false">
+        <wd-table :data="data" :border="false">
             <wd-table-col prop="id" label="编号" width="28%">
                 <template #value="{row}">
                     <view @click="copy(row.id)">{{ row.id }}</view>
