@@ -1,7 +1,7 @@
 import pc from 'picocolors'
 
 export default function UniExpandVueBind(debug=true) {
-    debug && console.debug(`使用 vue3 ${pc.cyan("同名简写")}扩展插件 ^.^`)
+    debug && console.debug(`欢迎使用${pc.cyan("VUE3 同名简写")}扩展插件 ^.^`)
     return {
         name: 'uni-expand-vue-bind',
         enforce: 'pre', // 在其它处理前执行，避免被 Vue 编译器提前处理
@@ -36,7 +36,7 @@ export default function UniExpandVueBind(debug=true) {
                 `<template>\n${expanded}\n</template>`
             )
             if(debug && count){
-                console.debug(`处理 ${pc.gray(id)} 替换 ${pc.cyan(count)} 个绑定...`)
+                console.debug(`替换${pc.cyan(String(count).padStart(3, ' '))} 个绑定 ${pc.gray(id)} `)
             }
 
             return {

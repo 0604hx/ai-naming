@@ -82,3 +82,12 @@ export const clearNames = (mod, ok)=> getNames().then(items=>{
 
     ok(items)
 })
+
+export const toBase64 = text=>{
+    // #ifndef H5
+    return uni.arrayBufferToBase64(new TextEncoder().encode(text))
+    // #endif
+    // #ifdef H5
+    return btoa(text)
+    // #endif
+}

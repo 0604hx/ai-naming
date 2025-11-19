@@ -40,7 +40,5 @@
         color = props.bean.icon?.color
 
         inited.value = true
-
-        console.debug(props.bean, fill, color)
     })
 </script>

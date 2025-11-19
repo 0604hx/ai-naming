@@ -2,7 +2,7 @@
     <Layout title="AI取名大师" :back="false" :tabbar="0" :top="15">
         <Trial ref="trialView" />
 
-        <wd-row :gutter="16" class="mod-row">
+        <wd-row :gutter="16" custom-class="mod-row">
             <wd-col v-for="item in items" :span="(item.col || 1)*12">
                 <Mod :bean="item" :bg="uiStore.modBg" @tap="jump(item)"/>
             </wd-col>
@@ -45,7 +45,7 @@
     onMounted(() => RESULT("/module/all", {}, d=> {
         items.value = d.data
 
-        trialView.value.check()
+        trialView.value.run()
     }))
 </script>
 

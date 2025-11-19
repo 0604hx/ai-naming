@@ -1,5 +1,5 @@
 <template>
-    <wd-card class="mod-card" :style="buildStyle()">
+    <wd-card custom-class="mod-card" :custom-style="buildStyle()">
         <view v-if="plain || bean.col>1" class="content">
             <SvgIcon :bean :size="iconSize"/>
             <view>
@@ -7,7 +7,7 @@
                 <view>{{bean.desc}}</view>
                 <view v-if="plain">
                     <wd-tag plain>每次消耗{{bean.price}}积分</wd-tag>
-                    <wd-tag class="ml-2" plain>每次生成{{bean.limit}}个结果</wd-tag>
+                    <wd-tag custom-class="ml-2" plain>每次生成{{bean.limit}}个结果</wd-tag>
                 </view>
             </view>
         </view>

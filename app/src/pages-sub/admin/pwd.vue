@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-    import { RESULT, updateToken, adminHomePage } from '@U'
+    import { RESULT, updateToken, adminHomePage, toBase64 } from '@U'
     import { useDataStore } from '@/store'
 
     import AdminLayout from './widget/layout.vue'
@@ -33,7 +33,7 @@
 
         RESULT(
             "/master/verify",
-            { code: btoa(code.value) },
+            { code: toBase64(code.value) },
             d=>{
                 toast.success(`验证成功`)
 
