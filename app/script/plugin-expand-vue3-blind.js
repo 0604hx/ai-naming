@@ -10,8 +10,9 @@ export default function UniExpandVueBind(debug=true) {
             if (!id.endsWith('.vue')) return
 
             // 提取 <template> 内容
-            const templateMatch = code.match(/<template[^>]*>([\s\S]*?)<\/template>/)
-            if (!templateMatch) return
+            const templateMatch = code.trim().match(/<template[^>]*>([\s\S]*?)<\/template>/)
+            if (!templateMatch)
+                return
 
             const template = templateMatch[1]
 

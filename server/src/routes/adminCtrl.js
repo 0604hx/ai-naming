@@ -8,7 +8,7 @@ import logger from "../common/logger";
 import config from "../config";
 import { createJwtToken, sm4Encrypt } from "../common/secret";
 import { AuthBean } from "../beans";
-import { dashboard } from "../service/SystemService";
+import { dashboard, pageViewStats } from "../service/SystemService";
 import { writeFileSync } from "node:fs";
 import { refreshModule } from "../service/ModuleService";
 import { has, get, set } from '../common/cache'
@@ -54,10 +54,9 @@ export default app=>{
         logger.info(`刷新模块列表...`)
     })
 
-    app.post('/master/overview', async ()=>{
-        logger.debug(`查询 admin overview 数据...`)
-        return ok(await dashboard())
-    })
+    app.post('/master/overview', async ()=>ok(await dashboard()))
+
+    app.post('/master/overview-pv', async()=> ok(await pageViewStats()))
 
     app.post('/master/coupon-list', ({ body:{ id, active=false, pageSize=20 }})=>{
         let sql = `SELECT * FROM ${COUPON} WHERE 1=1`
@@ -80,7 +79,8 @@ export default app=>{
         logger.info(`创建积分券 id=${id} quota=${quota}`)
         createCoupon({ id, quota })
 
-        return ok(id, `${server.url}s/${id}`)
+        let host = removeTrailingChar(config.server || (server?server.url.toString():""))
+        return ok(id, `${host}/s/${id}`)
     })
 
     app.post('/master/coupon-quota', ({ body:{id, quota}})=>{

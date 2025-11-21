@@ -43,7 +43,7 @@
                 <template #value>
                     <wd-text text='仅统计本地服务启动后' size="12px" />
                 </template>
-                <view class="p15" style="font-size: 14px;">
+                <view class="p15" style="font-size: 14px;" @tap="toPV">
                     首页被访问 <wd-count-to custom-class="inline" :endVal="bean.pv" type="default" /> 次，
                     共 <wd-count-to custom-class="inline" :endVal="bean.uv" type="default" /> 个 IP 地址
                     <wd-text v-if="bean.uv==0" text="统计值为0，可能未开启 PageView 统计" size="12px" />
@@ -54,6 +54,7 @@
                 <view class="p15">
                     <CreateCoupon :size="size" :coupon="50" />
                     <wd-button :size="size" type="primary" @click="refreshModule" custom-style="margin-left: 6px;">刷新模块缓存</wd-button>
+                    <Logout :size="size" type="primary" clazz="ml-1"/>
                 </view>
             </wd-cell-group>
 
@@ -76,6 +77,7 @@
     import { RESULT, filesize } from '@U'
     import AdminLayout from './widget/layout.vue'
     import CreateCoupon from './widget/create-coupon.vue'
+    import Logout from './widget/logout.vue'
 
     import { failFunc } from '.'
 
@@ -89,6 +91,7 @@
     let bean = {}
 
     const refreshModule = ()=> RESULT("/master/module-refresh", {}, ()=> toast.success(`模块缓存已清空`))
+    const toPV = ()=> router.push('/pages-sub/admin/pv')
 
     onMounted(() => {
         RESULT(

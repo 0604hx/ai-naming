@@ -44,6 +44,7 @@
                 { "path":"admin/name", "type":"page" },
                 { "path":"admin/log", "type":"page" },
                 { "path":"admin/pwd", "type":"page" },
+                { "path":"admin/pv", "type":"page" },
                 { "path":"admin/system/index", "type":"page" },
 
                 {

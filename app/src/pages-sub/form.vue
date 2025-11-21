@@ -117,6 +117,8 @@
     const tip = item=> `请输入${item.label}`+(item.max>0?`（${item.max}字内）`:"")
 
     const run = ()=>{
+        if(checkCoupon() != true)   return
+
         let params = {}
 
         for(let i=0;i<bean.params.length;i++){
@@ -137,8 +139,6 @@
                 params[p.label] = form[p.label]
             }
         }
-
-        console.debug(`表单值`, params, form)
 
         loading.value = true
         RESULT(
@@ -170,9 +170,7 @@
         toast.success(`⌈${row.text}⌋已收藏`)
     }
 
-    onMounted(() => {
-        id = route.query.id
-
+    const checkCoupon = ()=>{
         if(!dataStore.coupon){
             message
                 .confirm({
@@ -182,7 +180,14 @@
                 })
                 .then(()=> router.push("/pages-sub/coupon"))
                 .catch(()=>{})
+            return false
         }
+        return true
+    }
+
+    onMounted(() => {
+        id = route.query.id
+        checkCoupon()
 
         RESULT(`/module/${id}`, {}, d=>refrehBean(d.data))
     })

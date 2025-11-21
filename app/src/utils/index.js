@@ -1,8 +1,7 @@
-import { date, datetime } from './date'
-
 export * from './http'
 export * from './notice'
 export * from './date'
+export * from './uni'
 
 export const homePage = "/pages/index"
 export const adminHomePage = "/pages-sub/admin/index"
@@ -85,9 +84,72 @@ export const clearNames = (mod, ok)=> getNames().then(items=>{
 
 export const toBase64 = text=>{
     // #ifndef H5
-    return uni.arrayBufferToBase64(new TextEncoder().encode(text))
+    let arrBuf;
+    if(typeof TextDecoder !== 'undefined'){
+        arrBuf = new TextEncoder().encode(text)
+    }
+    else{
+        // 手动实现 UTF-8 编码，兼容真机小程序 TextEncoder is not defined
+        const bytes = [];
+        for (let i = 0; i < text.length; i++) {
+            let charCode = text.charCodeAt(i);
+            if (charCode < 0x80) {
+                bytes.push(charCode);
+            } else if (charCode < 0x800) {
+                bytes.push(0xc0 | (charCode >> 6));
+                bytes.push(0x80 | (charCode & 0x3f));
+            } else if (charCode < 0x10000) {
+                bytes.push(0xe0 | (charCode >> 12));
+                bytes.push(0x80 | ((charCode >> 6) & 0x3f));
+                bytes.push(0x80 | (charCode & 0x3f));
+            } else {
+                charCode -= 0x10000;
+                bytes.push(0xf0 | (charCode >> 18));
+                bytes.push(0x80 | ((charCode >> 12) & 0x3f));
+                bytes.push(0x80 | ((charCode >> 6) & 0x3f));
+                bytes.push(0x80 | (charCode & 0x3f));
+            }
+        }
+        arrBuf = new Uint8Array(bytes);
+    }
+    return uni.arrayBufferToBase64(arrBuf)
     // #endif
     // #ifdef H5
     return btoa(text)
     // #endif
+}
+
+/**
+ * Unit8Array 转字符串
+ * @param {Uint8Array} unit8Array
+ * @returns {String}
+ */
+export const base64ToString = unit8Array=>{
+    if(typeof TextDecoder !== 'undefined')
+        return new TextDecoder().decode(unit8Array)
+
+    // 手动实现 UTF-8 解码
+    let str = ''
+    let i = 0
+    const len = uint8Array.length
+    while (i < len) {
+        let byte = uint8Array[i]
+        let charCode
+        if (byte < 0x80) {
+            charCode = byte
+            i++
+        } else if (byte < 0xe0) {
+            charCode = ((byte & 0x1f) << 6) | (uint8Array[i + 1] & 0x3f)
+            i += 2
+        } else if (byte < 0xf0) {
+            charCode = ((byte & 0x0f) << 12) | ((uint8Array[i + 1] & 0x3f) << 6) | (uint8Array[i + 2] & 0x3f)
+            i += 3
+        } else {
+            charCode = ((byte & 0x07) << 18) | ((uint8Array[i + 1] & 0x3f) << 12) | ((uint8Array[i + 2] & 0x3f) << 6) | (uint8Array[i + 3] & 0x3f)
+            charCode += 0x10000
+            i += 4
+        }
+        str += String.fromCodePoint(charCode)
+    }
+    return str
 }

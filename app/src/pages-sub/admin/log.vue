@@ -1,6 +1,6 @@
 <template>
-    <AdminLayout title="历史记录" :tabbar="3" :top="0">
-        <wd-table :data="data" :border="false">
+    <AdminLayout title="历史记录" :tabbar="3" :top="0" :inited>
+        <wd-table :data="data" :border="false" :height="height">
             <wd-table-col prop="id" label="ID" width="16%" />
             <wd-table-col prop="mid" label="模块" width="22%" />
             <wd-table-col prop="price" label="积分/令牌" width="22%">
@@ -15,13 +15,16 @@
 </template>
 
 <script setup>
-    import { RESULT, datetime, date } from '@U'
+    import { RESULT, datetime, date, tableHeight } from '@U'
     import AdminLayout from './widget/layout.vue'
 
     let data = ref([])
+    let inited = ref(false)
+    const height = tableHeight(130)
 
     const refresh = ()=> RESULT("/master/log-list", { }, d=>{
         data.value = d.data
+        inited.value = true
     })
 
     onMounted( refresh )

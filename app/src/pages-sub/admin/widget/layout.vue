@@ -1,7 +1,6 @@
 <template>
     <view :class="{ 'wot-theme-dark': uiStore.dark }" :style="style">
-        <wd-navbar v-if="title" fixed placeholder :left-arrow="back" :right-text="right?'退出':''" @click-right="logout"
-            :bordered="navBorder" :title="title" safeAreaInsetTop>
+        <wd-navbar v-if="title" fixed placeholder :left-arrow="back" :bordered="navBorder" :title="title" safeAreaInsetTop>
             <template #capsule>
                 <wd-navbar-capsule @back="goBack" @back-home="toHome" />
             </template>
@@ -43,7 +42,6 @@
         top:{ type:Number, default: 15 }, //顶部距离
         title: {type:String},
         back: {type:Boolean, default: true },
-        right: {type:Boolean, default: true},
         tabbar: {type:Number, default: -1},
         tabRound: {type:Boolean, default: true },
         tabSafe: {type:Boolean, default:true},
@@ -91,20 +89,6 @@
     const toHome = ()=> {
         console.debug("跳转到首页", homePage)
         router.replace(homePage)
-    }
-    const logout = ()=>{
-        message
-            .confirm({
-                msg: `确定退出当前登录状态，并跳转到授权页吗？`,
-                title: `退出登录`,
-                confirmButtonText:"确定"
-            })
-            .then(()=> {
-                dataStore.setToken(null)
-
-                router.replace(adminPwdPage)
-            })
-            .catch(()=>{})
     }
 </script>
 

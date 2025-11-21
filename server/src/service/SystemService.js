@@ -6,6 +6,7 @@ import config from "../config";
 import { count, query } from "../db";
 import { COUPON, LLM_LOG, NAME, TRIAL } from "../fields";
 import logger from '../common/logger';
+import { ipToRegion } from '../common/web';
 
 /**@type {Map<String, Number>} */
 const pageView = new Map()
@@ -21,6 +22,21 @@ export const onPageView = ip =>new Promise(()=>{
     pageView.set(ip, (pageView.get(ip)||0) + 1)
     global.isDebug && logger.debug(`[PageView] 记录IP ${ip}=${pageView.get(ip)}`)
 })
+
+export const pageViewStats = ()=> withCache('dashboard.pv', async ()=>{
+    let ips = []
+    pageView.forEach((count, ip)=> ips.push({ ip, count, region:""}))
+
+    ips.sort((a, b)=> b.count-a.count)
+    //只对前200的IP进行地域解析
+    let max = Math.min(ips.length, 20)
+    for(let i=0;i<max;i++){
+        ips[i].region = await ipToRegion(ips[i].ip)
+    }
+
+    return ips
+}, 600)
+
 
 export const dashboard = ()=> withCache('dashboard', async ()=>{
     // 新增计算过去7日内的token消耗、试用总数

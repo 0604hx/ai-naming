@@ -147,7 +147,7 @@ export const initWebApp = ()=>{
 }
 
 /**
- * 根据IP地址查询归属地（国家/省份），基于ip9服务
+ * 根据IP地址查询归属地（国家/省份），基于ip9服务(免费版有单 IP 60 次 / 分钟的限制)
  * @param {string} ip - 待查询的IP地址字符串（支持IPv4/IPv6，空字符串则查询当前服务器IP）
  * @returns {Promise<string|null>} 归属地结果或null
  *   - 若IP归属中国：返回省份（如"北京"、"江苏省"）
@@ -155,6 +155,9 @@ export const initWebApp = ()=>{
  *   - 失败情况（网络错误、超时、接口异常等）：返回null
  */
 export const ipToRegion = async ip=>{
+    if(ip=='::1' || ip=='127.0.0.1')
+        return "本地"
+
     try {
         // 构造请求 URL，处理空 IP 情况
         const url = `https://ip9.com.cn/get?ip=${encodeURIComponent(ip || '')}`

@@ -1,6 +1,6 @@
 <template>
     <AdminLayout title="积分券管理" :tabbar="1" :top="0">
-        <wd-card title="条件筛选" style="margin: 10px 0px 10px 0px;">
+        <wd-card title="条件筛选" custom-style="margin: 10px 0px 10px 0px;">
             <wd-row :gutter="10">
                 <wd-col :span="12"><wd-input :size="size" placeholder="编号" v-model="form.id"/></wd-col>
                 <wd-col :span="12">
@@ -12,11 +12,11 @@
 
             <template #footer>
                 <CreateCoupon type="info" :size="size" icon="add-circle" />
-                <wd-button type="primary" :loading="loading" :size="size" icon="search" @click="refresh" style="margin-left: 10px;">检索</wd-button>
+                <wd-button type="primary" :loading="loading" :size="size" icon="search" @click="refresh" custom-style="margin-left: 10px;">检索</wd-button>
             </template>
         </wd-card>
 
-        <wd-table :data="data" :border="false">
+        <wd-table :data="data" :border="false" :height="height">
             <wd-table-col prop="id" label="编号" width="28%">
                 <template #value="{row}">
                     <view @click="copy(row.id)">{{ row.id }}</view>
@@ -44,13 +44,15 @@
 </template>
 
 <script setup>
-    import { RESULT, datetime } from '@U'
+    import { RESULT, datetime, tableHeight } from '@U'
     import AdminLayout from './widget/layout.vue'
     import CreateCoupon from './widget/create-coupon.vue'
 
     const toast = useToast()
     const message = useMessage()
     const size = "small"
+    const height = tableHeight(350)
+    console.debug(height)
 
     //{ id:"lqxoeL", quota:100, addOn: Date.now() }
     let data = ref([])

@@ -1,7 +1,7 @@
 {
     "name": "AI取名大师",
     "appid": "",
-    "description": "AI取名大师",
+    "description": "AI取名大师客户端",
     "versionName": "1.0.0",
     "versionCode": "",
     "transformPx": false,
@@ -83,8 +83,9 @@
         }
     },
     "mp-weixin": {
+        "projectname": "AI取名大师",
         "darkmode" : true,
-        "appid": "wxba15645103e45844",
+        "appid": "wx8174f85b97b176b5",
         "setting": {
             "urlCheck": false
         },

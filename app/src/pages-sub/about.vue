@@ -7,9 +7,9 @@
 
         <wd-card title="🎉 开源说明" border>
             本程序为开源项目，任何人可查阅源代码🚀。
-            <view class="mt-2" v-for="(item, index) in repositories">
-                仓库{{ index+1 }}：<a :href="item.url" target="_blank">{{ item.name }}</a>
-                <wd-icon class="ml-2" name="file-copy" @click="copy(item.url)" />
+            <view class="mt-2" v-for="(item, index) in repositories" @click="toCopy(item.url)">
+                仓库{{ index+1 }}：<a class="inline" :href="item.url" target="_blank">{{ item.name }}</a>
+                <wd-icon class="ml-2" name="file-copy" />
             </view>
 
             <view class="mt-2">
