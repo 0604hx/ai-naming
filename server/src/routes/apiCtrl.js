@@ -89,7 +89,7 @@ export default app=>{
 
         logger.info(`客户端 ${ip} 请求领取积分券 ${id}`)
 
-        let coupon = getCoupon(id)
+        let coupon = getCoupon(id.trim())
         if(coupon.quota<=0)
             throw `该积分券余额不足`
 
