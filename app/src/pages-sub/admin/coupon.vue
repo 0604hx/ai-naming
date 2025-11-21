@@ -17,7 +17,7 @@
         </wd-card>
 
         <wd-table :data="data" :border="false" :height="height">
-            <wd-table-col prop="id" label="编号" width="28%">
+            <wd-table-col prop="id" label="编号" width="25%">
                 <template #value="{row}">
                     <view @click="copy(row.id)">{{ row.id }}</view>
                 </template>
@@ -30,10 +30,10 @@
             <wd-table-col prop="addOn" label="日期" width="45%">
                 <template #value="{row}"> {{ datetime(row.addOn) }} </template>
             </wd-table-col>
-            <wd-table-col label="操作" width="12%" align="center" prop="">
+            <wd-table-col label="操作" width="15%" align="center" prop="">
                 <template #value="{row, index}">
                     <wd-icon name="share" @click="share(row)"></wd-icon>
-                    <wd-icon name="delete" class="ml-2" @click="remove(row, index)"></wd-icon>
+                    <wd-icon name="delete" custom-class="ml-3" @click="remove(row, index)"></wd-icon>
                 </template>
             </wd-table-col>
         </wd-table>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-    import { RESULT, datetime, tableHeight } from '@U'
+    import { RESULT, datetime, tableHeight, copyText } from '@U'
     import AdminLayout from './widget/layout.vue'
     import CreateCoupon from './widget/create-coupon.vue'
 
@@ -52,9 +52,7 @@
     const message = useMessage()
     const size = "small"
     const height = tableHeight(350)
-    console.debug(height)
 
-    //{ id:"lqxoeL", quota:100, addOn: Date.now() }
     let data = ref([])
     let form = reactive({ id:null, active:false, pageSize:50 })
     let loading = ref(false)
@@ -83,13 +81,9 @@
         })
         .catch(()=>{})
 
-    const copy = text=>{
-        navigator.clipboard.writeText(text)
-        toast.success(`编号已复制`)
-    }
+    const copy = text=>  copyText(text, ()=> toast.success(`编号已复制`))
     const share = row=> RESULT("/master/coupon-share", {id:row.id},d=>{
-        navigator.clipboard.writeText(d.data)
-        toast.success(`分享链接已复制`)
+        copyText(d.data, ()=> toast.success(`分享链接已复制`))
     })
 
     const remove = (row, index)=> message

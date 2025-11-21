@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-    import { RESULT, date, getNames, clearNames } from '@U'
+    import { RESULT, date, getNames, clearNames, copyText } from '@U'
     import { useDataStore } from '@/store'
 
     const dataStore = useDataStore()
@@ -72,10 +72,7 @@
         }
         names.value = nameTabs
     }
-    const copy = row=>{
-        navigator.clipboard.writeText(`${row.text}，${row.desc}`)
-        toast.success(`⌈${row.text}⌋已复制`)
-    }
+    const copy = row=> copyText(`${row.text}，${row.desc}`, ()=> toast.success(`⌈${row.text}⌋已复制`))
     const clear = ()=> message
         .confirm({
             msg: `请选择要清空的范围？`,

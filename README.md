@@ -8,6 +8,12 @@
 
 ---
 
+## 在线体验
+
+![](about/qrcode.webp)
+
+---
+
 ## 二次开发
 > 推荐使用[Bun.js](https://bun.com/)运行及部署
 

@@ -28,7 +28,7 @@
         if(!code.value)
             return toast.warning(`请填写券码`)
 
-        RESULT("/coupon/claim", { id:code.value }, d=>{
+        RESULT("/coupon/claim", { id:code.value.trim() }, d=>{
             let { id, quota } = d.data
             dataStore.setCoupon(id)
 

@@ -130,6 +130,7 @@
   params:
     - label: 门店类型
       type: SELECT
+      required: true
       items:
         - 便利店/超市
         - 正餐

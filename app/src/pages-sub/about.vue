@@ -7,7 +7,7 @@
 
         <wd-card title="🎉 开源说明" border>
             本程序为开源项目，任何人可查阅源代码🚀。
-            <view class="mt-2" v-for="(item, index) in repositories" @click="toCopy(item.url)">
+            <view class="mt-2" v-for="(item, index) in repositories" @click="copy(item.url)">
                 仓库{{ index+1 }}：<a class="inline" :href="item.url" target="_blank">{{ item.name }}</a>
                 <wd-icon class="ml-2" name="file-copy" />
             </view>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-    import { isH5, isWeixin, isApp } from '@U'
+    import { isH5, isWeixin, isApp, copyText } from '@U'
 
     const versionText = `当前版本：${__APP_VERSION__}（运行环境：${isH5?"H5":(isWeixin?"微信小程序":(isApp?"APP":"未知"))}）`
 
@@ -32,9 +32,6 @@
         { name:"GITCODE", url: "https://gitcode.com/ssrc0604hx/ai-naming" },
         { name:"GITHUB", url:"https://github.com/0604hx/ai-naming"}
     ]
-    const copy = text=>{
-        navigator.clipboard.writeText(text)
-        uni.showToast({ title:`URL 已复制` })
-    }
+    const copy = text=> copyText(text)
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <Layout title="AI取名大师" :back="false" :tabbar="0" :top="15">
+    <Layout :title :back="false" :tabbar="0" :top="15">
         <Trial ref="trialView" />
 
         <wd-row :gutter="16" custom-class="mod-row">
@@ -23,6 +23,7 @@
     const router = useRouter()
 
     const text = `欢迎使用，当前版本${__APP_VERSION__}`
+    const title = __APP_NAME__
 
     const trialView = ref()
     const items = ref([])
@@ -41,6 +42,12 @@
         }
         lastTime = now
     }
+
+    const buildShare = ()=>({ title, content: `给宝宝、宠物、店铺、网名、笔名起个有意义的名字` })
+    onShareAppMessage(res=>buildShare())
+    // #ifdef MP-WEIXIN
+    onShareTimeline(res=>buildShare())
+    // #endif
 
     onMounted(() => RESULT("/module/all", {}, d=> {
         items.value = d.data

@@ -14,3 +14,25 @@ export const tableHeight = (ignore)=>{
     }
     return canUseHeight - ignore
 }
+
+/**
+ *
+ * @param {String} data
+ * @param {Function} onOk 回调函数
+ */
+export const copyText = (data, onOk) => {
+    uni.setClipboardData({
+        data,
+        showToast: false,
+        success: ()=>{
+            if(onOk){
+                // #ifndef H5
+                // 小程序还是会默认弹窗
+                uni.hideToast()
+                // #endif
+                onOk()
+            }
+        },
+        fail: e=> uni.showModal({ title:`复制失败`, content: e.message??e})
+    })
+}

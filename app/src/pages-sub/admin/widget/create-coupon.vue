@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-    import { RESULT } from '@U'
+    import { RESULT, copyText } from '@U'
 
     const props = defineProps({
         coupon:{type:Number, default: 10},
@@ -37,14 +37,8 @@
                         confirmButtonText: "复制分享链接",
                         cancelButtonText: '复制ID'
                     })
-                    .then(() => {
-                        navigator.clipboard.writeText(d.message)
-                        toast.success(`分享链接已复制`)
-                    })
-                    .catch(() => {
-                        navigator.clipboard.writeText(d.data)
-                        toast.success(`券码已复制`)
-                    })
+                    .then(() => copyText(d.message, ()=> toast.success(`分享链接已复制`)))
+                    .catch(() => copyText(d.data, ()=>toast.success(`券码已复制`)))
             })
         })
         .catch(()=>{})

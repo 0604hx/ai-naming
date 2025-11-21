@@ -50,7 +50,8 @@ export default async ({ mode }) => {
             },
         },
         define:{
-            __APP_VERSION__ : JSON.stringify(version)
+            __APP_VERSION__ : JSON.stringify(version),
+            __APP_NAME__ : JSON.stringify(pkg.cnName)
         },
         // 插件注意： Unixx需要在Uni()之前引入
         plugins: [

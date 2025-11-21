@@ -76,7 +76,7 @@
 
 <script setup>
     import { useDataStore, useUIStore } from '@/store'
-    import { date, RESULT, saveNames } from '@U'
+    import { date, RESULT, saveNames, copyText } from '@U'
 
     import Mod from '@C/mod.vue'
 
@@ -162,10 +162,7 @@
         )
     }
 
-    const copy = row=>{
-        navigator.clipboard.writeText(`${row.text}，${row.desc}`)
-        toast.success(`⌈${row.text}⌋已复制`)
-    }
+    const copy = row=> copyText(`${row.text}，${row.desc}`, ()=> toast.success(`⌈${row.text}⌋已复制`))
     const mark = row=>{
         toast.success(`⌈${row.text}⌋已收藏`)
     }
@@ -184,6 +181,12 @@
         }
         return true
     }
+
+    const buildShare = ()=>({ title: `${title.value} | ${__APP_NAME__}`, content: `给宝宝、宠物、店铺、网名、笔名起个有意义的名字` })
+    onShareAppMessage(res=>buildShare())
+    // #ifdef MP-WEIXIN
+    onShareTimeline(res=>buildShare())
+    // #endif
 
     onMounted(() => {
         id = route.query.id

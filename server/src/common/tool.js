@@ -6,7 +6,7 @@ import os from 'node:os'
 import config from '../config'
 import { spawnSync } from 'node:child_process'
 
-const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz", 16)
+const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 16)
 
 /**
  *
