@@ -7,7 +7,8 @@
                     <wd-cell title="可用额度" icon="money-circle">
                         <wd-tag type="primary" mark plain>{{ coupon.quota }}</wd-tag>
                     </wd-cell>
-                <wd-cell title="创建日期" icon="calendar" :value="date(coupon.addOn)"/>
+                    <wd-cell title="创建日期" icon="calendar" :value="date(coupon.addOn)"/>
+                    <wd-cell title="更换积分券" icon="barcode" @click="toCoupon" is-link clickable />
                 </template>
                 <view v-else class="text-center">
                     <view>暂无可用积分券</view>
@@ -20,7 +21,7 @@
             <wd-cell-group use-slot>
                 <template #title>
                     取名记录
-                    <wd-text text="点击可复制" size="12px"></wd-text>
+                    <wd-text custom-class="ml-1" text="点击可复制" size="12px"></wd-text>
                 </template>
                 <template #value>
                     <wd-button class="mini" @click="clear" size="small" type="text">清空</wd-button>
@@ -60,7 +61,7 @@
     let nameTab = ref(0)
 
     const toCoupon = ()=> router.push("/pages-sub/coupon")
-    const help = ()=> message.alert({ title:"帮助与客服", msg:`更多帮助信息请联系⌈咸鱼⌋或添加微信 ironman_1024`})
+    const help = ()=> message.alert({ title:"帮助与客服", msg:`更多帮助信息请在⌈咸鱼⌋搜索⌈集成显卡⌋或添加微信 ironman_1024`})
 
     const refreshNames = items=>{
         // 按 mod 分组

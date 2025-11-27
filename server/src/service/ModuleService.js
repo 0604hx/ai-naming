@@ -9,7 +9,7 @@ import { callLLM } from "../service/AIService";
 import { count, exec, insertNew } from "../db";
 import config from "../config";
 import { consumeCoupon } from "./CouponService";
-import { Faker, zh_CN } from '@faker-js/faker'
+import { Faker, ro, zh_CN } from '@faker-js/faker'
 import { TinyColor } from '@ctrl/tinycolor'
 
 const CACHE_MODULE = "modules.all"
@@ -208,13 +208,14 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
     //启用异步任务，不阻塞请求的返回
     ;(async ()=>{
         let addOn = Date.now()
-        for(let bean of names){
-            let row = Name.parse(bean)
-            row.addOn = addOn
-            row.mod = mod.name
-            row.name = bean.text
 
+        for(let bean of names){
             try{
+                let row = Name.parse(bean)
+                row.addOn = addOn
+                row.mod = mod.name
+                row.name = bean.text
+
                 let result = exec(`UPDATE ${NAME} SET hot=hot+1 WHERE name=? AND mod=?`, row.name, row.mod)
                 if(result.changes==0){
                     insertNew(NAME, row)

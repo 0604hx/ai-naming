@@ -86,9 +86,6 @@
 
         router.replace(adminHomePage)
     }
-    const toHome = ()=> {
-        console.debug("跳转到首页", homePage)
-        router.replace(homePage)
-    }
+    const toHome = ()=> router.replace(homePage)
 </script>
 

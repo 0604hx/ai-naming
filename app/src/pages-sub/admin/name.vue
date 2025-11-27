@@ -11,7 +11,7 @@
             </template>
         </wd-card>
 
-        <wd-table :data="data" :border="false" :height="height">
+        <wd-table :data="data" :border="false" :height="height" @row-click="rowClick">
             <wd-table-col prop="name" label="名字" width="18%" />
             <wd-table-col prop="mod" label="模块" width="15%" />
             <wd-table-col prop="score" label="评分" width="14%" />
@@ -21,7 +21,7 @@
             </wd-table-col>
             <wd-table-col label="操作" width="12%" align="center" prop="">
                 <template #value="{row, index}">
-                    <wd-icon name="delete" @click="remove(row, index)"></wd-icon>
+                    <wd-icon name="delete" @click.native.stop="remove(row, index)"></wd-icon>
                 </template>
             </wd-table-col>
         </wd-table>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-    import { RESULT, datetime, date, tableHeight } from '@U'
+    import { RESULT, datetime, date, tableHeight, copyText } from '@U'
     import AdminLayout from './widget/layout.vue'
 
     const toast = useToast()
@@ -40,7 +40,6 @@
     const size = "small"
     const height = tableHeight(260)
 
-    //{ id:"lqxoeL", quota:100, addOn: Date.now() }
     let data = ref([])
     let form = reactive({ pageSize:20 })
     let loading = ref(false)
@@ -51,6 +50,11 @@
             data.value = d.data
             loading.value = false
         }, ()=>loading.value = false)
+    }
+
+    const rowClick = ({ rowIndex })=>{
+        let row = data.value[rowIndex]
+        copyText(row.name)
     }
 
     const remove = (row, index)=> message

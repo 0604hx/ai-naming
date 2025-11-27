@@ -100,7 +100,7 @@ export const LLMLog = z.object({
 export const Name = z.object({
     name: z.string().default(null),
     mod: z.string().default(null),
-    score: z.number().default(null),
+    score: z.number().nullable().default(null),
     hot: z.number().default(0),
     addOn : z.number().default(null)
 })

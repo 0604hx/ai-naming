@@ -21,9 +21,10 @@ export const tableHeight = (ignore)=>{
  * @param {Function} onOk 回调函数
  */
 export const copyText = (data, onOk) => {
+    let showToast = !onOk
     uni.setClipboardData({
         data,
-        showToast: false,
+        showToast,
         success: ()=>{
             if(onOk){
                 // #ifndef H5

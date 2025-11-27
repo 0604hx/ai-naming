@@ -59,7 +59,7 @@
                 <template #title>
                     <wd-icon name="spool" class="primary" />
                     取名结果
-                    <wd-text text="点击名字可复制信息" size="12px"/>
+                    <wd-text custom-class="ml-1" text="点击名字可复制信息" size="12px"/>
                 </template>
                 <wd-cell v-for="item in result.names" :label="item.desc" center title-width="75%" size="large">
                     <template #title>
