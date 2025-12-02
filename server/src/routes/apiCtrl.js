@@ -59,8 +59,8 @@ export default app=>{
      * 调用取名
      */
     app.post("/run", async ctx => {
-        let ip = getIp(ctx)
         let { id, coupon, params } = ctx.body
+        let ip = getIp(ctx)
 
         onPageView(ip)
         return ok(await runModule(id, coupon, params, ip))

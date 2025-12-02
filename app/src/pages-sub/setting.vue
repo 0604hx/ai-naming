@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-    import { useUIStore, uiThemes } from '@/store';
+    import { useUIStore } from '@/store';
     const uiStore = useUIStore()
 
     const toast = useToast()

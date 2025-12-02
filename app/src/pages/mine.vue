@@ -11,7 +11,7 @@
                     <wd-cell title="更换积分券" icon="barcode" @click="toCoupon" is-link clickable />
                 </template>
                 <view v-else class="text-center">
-                    <view>暂无可用积分券</view>
+                    <view class="p-2">暂无可用积分券</view>
                     <wd-button @click="toCoupon" class="mt-2">前往兑换</wd-button>
                 </view>
             </wd-cell-group>

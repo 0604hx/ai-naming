@@ -9,30 +9,30 @@ const cache = new NodeCache({ useClones: true })
  * @param {Number} ttl
  * @returns
  */
-export const set = (key, value, ttl=2*60*60)=> {
+export const setCache = (key, value, ttl=2*60*60)=> {
     cache.set(key, value, ttl)
     return value
 }
 
-export const get = (key, defaultVal)=> cache.get(key) || defaultVal
+export const getCache = (key, defaultVal)=> cache.get(key) || defaultVal
 
-export const take = key=> cache.take(key)
+export const takeCache = key=> cache.take(key)
 
 /**
  *
  * @param {String} key
  * @returns {Boolean}
  */
-export const has = key=> cache.has(key)
+export const hasCache = key=> cache.has(key)
 
 /**
  * 删除缓存
  * @param {String|Array<String>} key
  * @returns {Number}
  */
-export const del = key=> cache.del(key)
+export const delCache = key=> cache.del(key)
 
-export const keys = ()=> cache.keys()
+export const cacheKeys = ()=> cache.keys()
 
 /**
  *
@@ -40,7 +40,7 @@ export const keys = ()=> cache.keys()
  * @param {Boolean} withPrefix - 是否前缀匹配删除
  * @returns {Number} 删除的个数
  */
-export const clear = (key, withPrefix=false)=>{
+export const clearCache = (key, withPrefix=false)=>{
     let count = 0
     if(withPrefix){
         cache.keys()
@@ -59,7 +59,7 @@ export const clear = (key, withPrefix=false)=>{
     return count
 }
 
-export const stats = ()=> cache.getStats()
+export const cacheStats = ()=> cache.getStats()
 
 /**
  *
@@ -68,10 +68,10 @@ export const stats = ()=> cache.getStats()
  * @param {Number} exire - 超时，单位秒，默认两小时
  */
 export const withCache = async (key, creater, expire=120*60)=>{
-    if(has(key)){
+    if(hasCache(key)){
         // if(global.isDebug)  logger.debug(`[CACHE] 使用缓存 ${key}`)
-        return get(key)
+        return getCache(key)
     }
     const data = await creater()
-    return set(key, data, expire)
+    return setCache(key, data, expire)
 }

@@ -2,7 +2,11 @@
 <template>
     <Layout title="IP访问记录（临时）" :top="0" :inited>
         <wd-table :data :border="false" :height>
-            <wd-table-col prop="ip" label="IP" width="30%" />
+            <wd-table-col prop="ip" label="IP" width="30%">
+                <template #value="{row}">
+                    <view @click="copyText(row.ip)">{{ row.ip }}</view>
+                </template>
+            </wd-table-col>
             <wd-table-col prop="region" label="地域" width="52%" />
             <wd-table-col prop="count" label="次数" width="18%" />
         </wd-table>
@@ -10,7 +14,7 @@
 </template>
 
 <script setup>
-    import { RESULT, tableHeight } from '@U'
+    import { RESULT, tableHeight, copyText } from '@U'
 
     let data = ref([])
     let inited = ref(false)

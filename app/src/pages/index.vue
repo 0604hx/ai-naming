@@ -28,10 +28,7 @@
     const trialView = ref()
     const items = ref([])
 
-    const jump = item=>{
-        console.debug("跳转", item)
-        router.push(`/pages-sub/form?id=${item.id}`)
-    }
+    const jump = item=>router.push(`/pages-sub/form?id=${item.id}`)
 
     let lastTime = 0
     const onClick = ()=>{

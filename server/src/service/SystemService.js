@@ -1,6 +1,6 @@
 import { statSync } from 'node:fs'
 import { platform } from 'node:os'
-import { stats, withCache } from "../common/cache";
+import { cacheStats, withCache } from "../common/cache";
 import { datetime } from "../common/date";
 import config from "../config";
 import { count, query } from "../db";
@@ -28,8 +28,8 @@ export const pageViewStats = ()=> withCache('dashboard.pv', async ()=>{
     pageView.forEach((count, ip)=> ips.push({ ip, count, region:""}))
 
     ips.sort((a, b)=> b.count-a.count)
-    //只对前200的IP进行地域解析
-    let max = Math.min(ips.length, 20)
+    //只对前10的IP进行地域解析
+    let max = Math.min(ips.length, 10)
     for(let i=0;i<max;i++){
         ips[i].region = await ipToRegion(ips[i].ip)
     }
@@ -49,7 +49,7 @@ export const dashboard = ()=> withCache('dashboard', async ()=>{
         'uptime'            : datetime(new Date(Date.now() - process.uptime()*1000)),
         'mem'               : process.memoryUsage.rss(),
         'db'                : statSync(config.db.file).size,
-        'cache'             : stats().vsize,
+        'cache'             : cacheStats().vsize,
         'updateOn'          : datetime(),
         //--------------- END 系统信息 END ---------------
         'coupon'            : count(COUPON),

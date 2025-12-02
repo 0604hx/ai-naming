@@ -11,7 +11,7 @@ import { AuthBean } from "../beans";
 import { dashboard, pageViewStats } from "../service/SystemService";
 import { writeFileSync } from "node:fs";
 import { refreshModule } from "../service/ModuleService";
-import { has, get, set } from '../common/cache'
+import { hasCache, getCache, setCache } from '../common/cache'
 
 /**
  * @param {Elysia} app
@@ -23,18 +23,18 @@ export default app=>{
             throw `未启用管理员功能`
 
         let cacheKey = `pres@${ip}`
-        if(has(cacheKey) && get(cacheKey)>= config.secret.pwdRetryMax){
-            logger.error(`客户端 ${ip} 验证失败 ${get(cacheKey)} 次，已被锁定...`)
+        if(hasCache(cacheKey) && getCache(cacheKey)>= config.secret.pwdRetryMax){
+            logger.error(`客户端 ${ip} 验证失败 ${getCache(cacheKey)} 次，已被锁定...`)
             throw `管理权限校验次数过多，请稍后再试`
         }
 
         global.isDebug && logger.debug(`客户端 ${ip} 请求特权验证 CODE=${code}`)
         if(sm4Encrypt(code, presKey) != presPwd){
             // 写入缓存
-            if(has(cacheKey))
-                set(cacheKey, get(cacheKey)+1)
+            if(hasCache(cacheKey))
+                setCache(cacheKey, getCache(cacheKey)+1)
             else
-                set(cacheKey, 1, 7200)
+                setCache(cacheKey, 1, 7200)
 
             throw `验证失败`
         }

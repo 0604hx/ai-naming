@@ -15,11 +15,11 @@
         <wd-button class="mt-2" type="primary" size="large" @click="save" :round="false" block :loading="loading">保存配置</wd-button>
     </view>
 
-    <view class="card card-info">
+    <view class="card">
         <view class="head">参数说明</view>
         <view>1. 请查阅大模型供应商获取相关参数</view>
         <view>2. TOKEN 阈值默认是 500，设置大于0的数值才可生效</view>
-        <view>3. <wd-text text="请谨慎操作" type="warning" /></view>
+        <view>3. <wd-text text="请谨慎操作" bold /></view>
     </view>
 
     <wd-toast />

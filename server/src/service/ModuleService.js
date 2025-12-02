@@ -1,4 +1,4 @@
-import { withCache, clear } from "../common/cache";
+import { withCache, clearCache, setCache, getCache } from "../common/cache";
 import { existsSync, readFileSync } from 'node:fs'
 import logger from "../common/logger";
 import { LLMLog, ModuleBeans, Name } from "../beans";
@@ -9,7 +9,7 @@ import { callLLM } from "../service/AIService";
 import { count, exec, insertNew } from "../db";
 import config from "../config";
 import { consumeCoupon } from "./CouponService";
-import { Faker, ro, zh_CN } from '@faker-js/faker'
+import { Faker, zh_CN } from '@faker-js/faker'
 import { TinyColor } from '@ctrl/tinycolor'
 
 const CACHE_MODULE = "modules.all"
@@ -74,8 +74,8 @@ export const listModule = (simple=true)=> !simple ? withCache(CACHE_MODULE, ()=>
 })
 
 export const refreshModule = ()=> {
-    clear(CACHE_MODULE)
-    clear(CACHE_MODULE_SIMPLE)
+    clearCache(CACHE_MODULE)
+    clearCache(CACHE_MODULE_SIMPLE)
 }
 
 export const getModule = async id=> {
@@ -183,7 +183,7 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
         throw `积分券 ${coupon} 余额不足`
 
     //构建提示语句
-    const prompt = Mustache.render(mod.prompt, {...params, limit: mod.limit })
+    const prompt = Mustache.render(mod.prompt, params)
     global.isDebug && logger.debug(`[提示词] ${prompt}`)
 
     if(config.app.useMock){
@@ -191,8 +191,18 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
         return createRandomNames(mod.limit)
     }
 
+    const cacheId = `${coupon}.${mod.id}`
+    /**@type {Set<String>} */
+    let cacheNames = getCache(cacheId, new Set())
+
     let messages = []
-    if(mod.message) messages.push(mod.message)
+    // 如果配置了模块提示词
+    if(mod.message)
+        messages.push(mod.message)
+    if(cacheNames.size){
+        global.isDebug && logger.debug(`${cacheId} 缓存名字 `, cacheNames)
+        messages.push(`排除以下名字：${[...cacheNames].join("、")}`)
+    }
     messages.push(Mustache.render(config.app.prompt, mod))
 
     let { content, used, token } = await callLLM(prompt, messages)
@@ -210,6 +220,8 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
         let addOn = Date.now()
 
         for(let bean of names){
+            cacheNames.add(bean.text)
+
             try{
                 let row = Name.parse(bean)
                 row.addOn = addOn
@@ -225,6 +237,8 @@ export const runModule = async (id, coupon, params={}, ip=null)=>{
                 logger.error(`[异步入库出错] ${e.message??e}`)
             }
         }
+
+        setCache(cacheId, cacheNames)
     })()
 
     return names

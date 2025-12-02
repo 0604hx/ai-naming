@@ -1,5 +1,5 @@
 <script setup>
-    import { updateToken } from '@U'
+    import { updateToken, checkMicroUpdate } from '@U'
     import { useUIStore, useDataStore } from '@/store'
 
     const uiStore = useUIStore()
@@ -35,6 +35,7 @@
             updateToken(dataStore.token)
     })
     onShow(() => {
+        checkMicroUpdate()
     })
     onHide(() => {
     })

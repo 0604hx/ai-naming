@@ -8,7 +8,7 @@
 
         <view v-if="top" :style="{height: top+'px'}" />
 
-        <view class="text-center" v-if="!inited">
+        <view v-if="!inited" class="text-center">
             <wd-loading type="outline" />
         </view>
         <template v-else>
