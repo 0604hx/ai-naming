@@ -17,7 +17,7 @@
             <wd-table-col prop="score" label="评分" width="14%" />
             <wd-table-col prop="hot" label="热度" width="14%" />
             <wd-table-col prop="addOn" label="日期" width="27%">
-                <template #value="{row}"> {{ date(1762503518647) }} </template>
+                <template #value="{row}"> {{ date(row.addOn) }} </template>
             </wd-table-col>
             <wd-table-col label="操作" width="12%" align="center" prop="">
                 <template #value="{row, index}">
@@ -26,7 +26,7 @@
             </wd-table-col>
         </wd-table>
         <view class="text-center mt-2">
-            <wd-text :text="`显示前`+form.pageSize+`个结果`" size="12px" />
+            <wd-text :text="`按热度显示前`+form.pageSize+`个结果`" size="12px" />
         </view>
     </AdminLayout>
 </template>

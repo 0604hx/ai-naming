@@ -51,7 +51,7 @@
     const toast = useToast()
     const message = useMessage()
     const size = "small"
-    const height = tableHeight(350)
+    const height = tableHeight(300)
 
     let data = ref([])
     let form = reactive({ id:null, active:false, pageSize:50 })

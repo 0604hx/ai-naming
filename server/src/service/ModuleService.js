@@ -40,7 +40,7 @@ const readModuleFile = file=>{
 export const readModules = ()=>{
     let mods = [...readModuleFile(MODULE_FILE), ...readModuleFile(MODULE_EXTEND_FILE)]
 
-    let { modColors } = config.app
+    let { modColors, modColorDark=0 } = config.app
     if(Array.isArray(modColors) && modColors.length){
         let colIndex = 0
         for(let m of mods){
@@ -56,7 +56,7 @@ export const readModules = ()=>{
     //配置fill色
     for(let m of mods){
         if(m.icon && m.icon.fill == null)
-            m.icon.fill = new TinyColor(m.icon.color).darken(30).toHexString()
+            m.icon.fill = new TinyColor(m.icon.color).darken(modColorDark).toHexString()
     }
 
     return mods

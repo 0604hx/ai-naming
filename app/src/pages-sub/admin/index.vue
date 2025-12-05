@@ -11,7 +11,7 @@
                     </view>
                 </wd-col>
                 <wd-col :span="8">
-                    <view class="card card-gray m0">
+                    <view class="card card-gray m0" @click="toTrial">
                         <view class="title"><wd-icon name="bags" custom-class="mr-1" />试用</view>
                         <wd-count-to :endVal="bean.trial" type="default" suffix=" 次"/>
                     </view>
@@ -92,6 +92,7 @@
 
     const refreshModule = ()=> RESULT("/master/module-refresh", {}, ()=> toast.success(`模块缓存已清空`))
     const toPV = ()=> router.push('/pages-sub/admin/pv')
+    const toTrial = ()=> router.push('/pages-sub/admin/trial')
 
     onMounted(() => {
         RESULT(

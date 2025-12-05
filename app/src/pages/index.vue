@@ -2,9 +2,9 @@
     <Layout :title :back="false" :tabbar="0" :top="15">
         <Trial ref="trialView" />
 
-        <wd-row :gutter="16" custom-class="mod-row">
+        <wd-row :gutter="10" custom-class="mod-row">
             <wd-col v-for="item in items" :span="(item.col || 1)*12">
-                <Mod :bean="item" :bg="uiStore.modBg" @tap="jump(item)"/>
+                <Mod :bean="item" :bg="uiStore.modBg" :iconSize="44" @tap="jump(item)"/>
             </wd-col>
         </wd-row>
         <view class="text-center p-1">

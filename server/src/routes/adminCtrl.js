@@ -1,7 +1,7 @@
 import Elysia from "elysia";
 import { assert, ok } from "../common";
 import { delByID, exec, query } from "../db";
-import { CONFIG_FILE, COUPON, LLM_LOG, NAME } from "../fields";
+import { CONFIG_FILE, COUPON, LLM_LOG, NAME, TRIAL } from "../fields";
 import { createCoupon } from "../service/CouponService";
 import { removeTrailingChar, uuid } from "../common/tool";
 import logger from "../common/logger";
@@ -118,12 +118,29 @@ export default app=>{
 
         ps.push(pageSize)
 
-        return ok(query(`${sql} LIMIT ?`, ps))
+        return ok(query(`${sql} ORDER BY hot DESC LIMIT ?`, ps))
     })
 
     app.post("/master/name-del", ({ body:{name, mod}})=>{
         exec(`DELETE FROM ${NAME} WHERE name=? AND mod=?`, name, mod)
         logger.info(`删除名字 ${mod}/${name}`)
+    })
+
+    app.post("/master/trial-list", ({ body:{ id, platform, pageSize=20 }})=>{
+        let sql = `SELECT * FROM ${TRIAL} WHERE 1=1`
+        let ps = []
+        if(!!id){
+            sql += ` AND id = ?`
+            ps.push(id)
+        }
+        if(!!platform){
+            sql += ` AND platform=?`
+            ps.push(platform)
+        }
+
+        ps.push(pageSize)
+
+        return ok(query(`${sql} ORDER BY addOn DESC LIMIT ?`, ps))
     })
 
     app.post(

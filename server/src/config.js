@@ -60,7 +60,10 @@ const config = {
          * 初版配色："#BBDEFB","#D1C4E9","#FFCDD2"
          */
         // modColors:["#8A75AF","#D47A92","#CAE4E2","#D1C5A5","#CF9EA0","#E6D1D5","#9FB7BD"],
-        modColors:["#B3DEF7","#D2E7D3","#F6E0D8","#BFE1E5","#E3EACB","#E8EBEC","#E6D9EB"],
+        // 2025-12-05
+        // modColors:["#B3DEF7","#D2E7D3","#F6E0D8","#BFE1E5","#E3EACB","#E8EBEC","#E6D9EB"],
+        modColors:["#0091D8","#E73649","#EE7D09","#F8BD00","#96C535","#00A496","#D45F9D"],
+        modColorDark: 0,       //暗色处理，0为原色，100为纯黑
 
         /**
          * 大模型配置参数，参考 openAI SDK
