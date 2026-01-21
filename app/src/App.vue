@@ -5,6 +5,35 @@
     const uiStore = useUIStore()
     const dataStore = useDataStore()
 
+    /**
+     * 计算UUID
+     */
+    const computeUUID = ()=>{
+        if(dataStore.uuid)  return
+
+        // #ifdef H5
+        // Initialize the agent at application startup.
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v5')
+            .then(FingerprintJS => FingerprintJS.load())
+
+        // Get the visitor identifier when you need it.
+        fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+                console.debug(`获取到客户端指纹`, result.visitorId)
+
+                dataStore.uuid = result.visitorId
+            })
+        // #endif
+
+        // #ifndef H5
+        uni.login({ provider: 'weixin', success: async ({ code }) => {
+                console.debug("获取用户UUID", code)
+                dataStore.uuid = code
+        }})
+        // #endif
+    }
+
     const updateTheme = ({ theme }) => {
         // let isDark = false
         // if(uiStore.theme == darkTheme)
@@ -33,6 +62,8 @@
 
         if(dataStore.token)
             updateToken(dataStore.token)
+
+        computeUUID()
     })
     onShow(() => {
         checkMicroUpdate()

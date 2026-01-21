@@ -5,9 +5,9 @@ import logger from "../common/logger";
 import { createCoupon, getCoupon } from "../service/CouponService";
 import config from "../config";
 import { removeTrailingChar, uuid as createUUID } from "../common/tool";
-import { count, insertNew } from "../db";
-import { TRIAL } from "../fields";
-import { Trial } from "../beans";
+import { count, exec, insertNew, query } from "../db";
+import { MARK, TRIAL } from "../fields";
+import { Mark, Trial } from "../beans";
 import { getIp, ipToRegion } from "../common/web";
 import { onPageView } from "../service/SystemService";
 
@@ -124,5 +124,35 @@ export default app=>{
         logger.info(`保存试用信息 ${uuid} (region=${region} platform=${platform}) sys=${sys}`)
 
         return ok(cid)
+    })
+
+    app.post("/mark", async ({ body:{ uuid, name, mod }})=>{
+        logger.debug(`${uuid} 收藏名称 ${mod}/${name}`)
+        let module = await getModule(mod)
+
+        insertNew(MARK, Mark.parse({ uuid, name, mod: module? module.name: mod, addOn: Date.now() }))
+    })
+
+    /**
+     * 获取用户收藏的名字
+     * 按收藏时间倒序
+     */
+    app.post("/mark/list", ({ body:{ uuid, name }})=>{
+        let where = "uuid=?"
+        let ps = [uuid]
+        if(name) {
+            where += " AND name LIKE ?"
+            ps.push(`%${name}%`)
+        }
+        return ok(query(`SELECT * FROM ${MARK} WHERE ${where} ORDER BY id DESC LIMIT ${config.app.markLimit}`, ...ps))
+    })
+
+    /**
+     * 删除用户收藏的名字
+     * 必须传递收藏编号(id)
+     */
+    app.post("/mark/delete", ({ body:{ uuid, name, id }})=>{
+        logger.debug(`${uuid} 删除收藏名称 ${id}/${name}`)
+        exec(`DELETE FROM ${MARK} WHERE id=? AND uuid=? AND name=?`, id, uuid, name)
     })
 }

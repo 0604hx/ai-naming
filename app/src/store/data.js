@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 export const useDataStore = defineStore('data', {
     state:()=>({
         coupon: null,
-        token: null
+        token: null,
+        uuid: null
     }),
     actions: {
         setCoupon (v){

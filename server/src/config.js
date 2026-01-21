@@ -52,6 +52,7 @@ const config = {
         couponQuota: 10,        //默认积分券额度
         showScore: true,        //是否回显名称得分，配置为 false 则结果不会返回 score 值
         useMock: false,         //取名时是否启用随机数据（用于功能演示，避免调用大模型产生费用）
+        markLimit: 100,         //用户查看收藏的名字数量上限
 
         /**
          * 模块主题配色，如果在 module.yaml 中没有指定颜色，则从该配置中顺位赋值

@@ -165,6 +165,10 @@
     const copy = row=> copyText(`${row.text}，${row.desc}`, ()=> toast.success(`⌈${row.text}⌋已复制`))
     const mark = row=>{
         toast.success(`⌈${row.text}⌋已收藏`)
+
+        RESULT("/mark", { uuid: dataStore.uuid, name:row.text, mod: id }, d=>{
+            console.debug(d)
+        })
     }
 
     const checkCoupon = ()=>{

@@ -1,16 +1,10 @@
-import { useUserStore } from '@/store';
 import { isWhiteList } from '@/router';
 
 const navigateToInterceptor = {
     invoke({ url }) {
-        // 判断是否登录
-        if (useUserStore().token) {
-            return true;
-        } else {
-            const flag = isWhiteList(url);
-            if (!flag) return uni.navigateTo({ url: '/sub-pages/login/index' });
-            return flag;
-        }
+        const flag = isWhiteList(url);
+        if (!flag) return uni.navigateTo({ url: '/sub-pages/login/index' });
+        return flag;
     },
 };
 

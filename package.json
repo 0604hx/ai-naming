@@ -25,12 +25,12 @@
         "zip": "bun --cwd app zip:h5"
     },
     "dependencies": {
-        "@dcloudio/types": "^3.4.28",
+        "@dcloudio/types": "^3.4.29",
         "adm-zip": "^0.5.16",
         "picocolors": "^1.1.1",
-        "sm-crypto": "^0.3.13"
+        "sm-crypto": "^0.4.0"
     },
     "devDependencies": {
-        "@types/bun": "^1.3.3"
+        "@types/bun": "^1.3.6"
     }
 }

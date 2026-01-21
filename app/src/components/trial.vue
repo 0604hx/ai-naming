@@ -36,29 +36,33 @@
         if(dataStore.coupon)
             return
 
-        // #ifdef H5
-        // Initialize the agent at application startup.
-        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v5')
-            .then(FingerprintJS => FingerprintJS.load())
+        uuid = dataStore.uuid
+        if(!!uuid)
+            checkTrial()
 
-        // Get the visitor identifier when you need it.
-        fpPromise
-            .then(fp => fp.get())
-            .then(result => {
-                uuid = result.visitorId
-                console.debug(`获取到客户端指纹`, uuid)
+        // // #ifdef H5
+        // // Initialize the agent at application startup.
+        // const fpPromise = import('https://openfpcdn.io/fingerprintjs/v5')
+        //     .then(FingerprintJS => FingerprintJS.load())
 
-                checkTrial()
-            })
-        // #endif
+        // // Get the visitor identifier when you need it.
+        // fpPromise
+        //     .then(fp => fp.get())
+        //     .then(result => {
+        //         uuid = result.visitorId
+        //         console.debug(`获取到客户端指纹`, uuid)
 
-        // #ifndef H5
-        uni.login({ provider: 'weixin', success: async ({ code }) => {
-                console.debug("获取用户UUID", code)
-                uuid = code
-                checkTrial()
-        }})
-        // #endif
+        //         checkTrial()
+        //     })
+        // // #endif
+
+        // // #ifndef H5
+        // uni.login({ provider: 'weixin', success: async ({ code }) => {
+        //         console.debug("获取用户UUID", code)
+        //         uuid = code
+        //         checkTrial()
+        // }})
+        // // #endif
     }
 
     const getTrial = ()=> {

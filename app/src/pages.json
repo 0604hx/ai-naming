@@ -29,13 +29,16 @@
                 "navigationBarTitleText": "我的"
             },
             "name": "mine"
-        }
+        },
+        { "path": "pages/form" },
+        { "path": "pages/name" },
+        { "path": "pages/mark" }
     ],
     "subPackages": [
         {
             "root": "pages-sub",
             "pages": [
-                { "path": "form" },
+                
                 { "path":"coupon" },
                 { "path": "setting" },
                 { "path": "about" },

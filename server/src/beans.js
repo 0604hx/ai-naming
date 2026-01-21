@@ -57,6 +57,7 @@ export const tableSchemas = [
         mod TEXT NOT NULL,
         score INTEGER DEFAULT 0,
         hot INTEGER DEFAULT 0,
+        mark INTEGER DEFAULT 0,
         addOn INTEGER,
         PRIMARY KEY (name, mod)
     );`,
@@ -67,6 +68,13 @@ export const tableSchemas = [
         region TEXT DEFAULT NULL,
         platform TEXT DEFAULT NULL,
         sys TEXT DEFAULT NULL,
+        addOn INTEGER
+    );`,
+    `CREATE TABLE IF NOT EXISTS mark (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid TEXT NOT NULL,
+        name TEXT NOT NULL,
+        mod TEXT NOT NULL,
         addOn INTEGER
     );`
 ]
@@ -102,6 +110,7 @@ export const Name = z.object({
     mod: z.string().default(null),
     score: z.number().nullable().default(null),
     hot: z.number().default(0),
+    mark: z.number().default(0),
     addOn : z.number().default(null)
 })
 export const Trial = z.object({
@@ -114,6 +123,16 @@ export const Trial = z.object({
     platform: z.string().default(null),
     /**客户端操作系统 */
     sys: z.string().default(null),
+    addOn: z.number().default(null)
+})
+export const Mark = z.object({
+    /**收藏编号 */
+    id: z.number().default(null),
+    /**用户ID */
+    uuid: z.string().default(null),
+    /**收藏的名称 */
+    name: z.string().default(null),
+    mod: z.string().default(null),
     addOn: z.number().default(null)
 })
 
@@ -168,10 +187,11 @@ export const ModuleBeans = z.array(ModuleBean)
  * @property {String} content 大模型返回结果
  * @property {Number} used 耗时
  * @property {Number} token token消耗
- *
+ /**
  * @typedef {z.infer<typeof ModuleBean>} ModuleBeanType
  * @typedef {z.infer<typeof Coupon>} CouponType
  * @typedef {z.infer<typeof LLMLog>} LLMLogType
  * @typedef {z.infer<typeof Name>} NameType
  * @typedef {z.infer<typeof Trial>} TrialType
+ * @typedef {z.infer<typeof Mark>} MarkType
  */
