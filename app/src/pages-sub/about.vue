@@ -1,6 +1,10 @@
 <template>
     <Layout title="关于 AI 取名大师">
         <wd-card title="ℹ️ 功能简介">
+            <view class="text-center mb-4">
+                <wd-img :width="size" :height="size" src="/static/logo.png" enable-preview/>
+            </view>
+
             借助<wd-text text="豆包" type="primary"/>、<wd-text text="通义千问" type="primary"/>、<wd-text text="DeepSeek" type="primary"/> 等 AI 大模型，
             为您的宝宝、宠物、店铺、网名、笔名、项目、产品、服务等取一个专业、有意义的名字。
         </wd-card>
@@ -28,10 +32,12 @@
 
     const versionText = `当前版本：${__APP_VERSION__}（运行环境：${isH5?"H5":(isWeixin?"微信小程序":(isApp?"APP":"未知"))}）`
 
+    const size = 160
     const repositories = [
         { name:"GITCODE", url: "https://gitcode.com/ssrc0604hx/ai-naming" },
         { name:"GITHUB", url:"https://github.com/0604hx/ai-naming"}
     ]
     const copy = text=> copyText(text)
+    
 
 </script>

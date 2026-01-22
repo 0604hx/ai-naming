@@ -1,6 +1,6 @@
 <template>
     <AdminLayout title="积分券管理" :tabbar="1" :top="0">
-        <wd-card title="条件筛选" custom-style="margin: 10px 0px 10px 0px;">
+        <wd-card title="条件筛选" custom-style="margin: 0px 0px 10px 0px;">
             <wd-row :gutter="10">
                 <wd-col :span="12"><wd-input :size="size" placeholder="编号" v-model="form.id"/></wd-col>
                 <wd-col :span="12">
@@ -51,7 +51,7 @@
     const toast = useToast()
     const message = useMessage()
     const size = "small"
-    const height = tableHeight(300)
+    const height = tableHeight(290)
 
     let data = ref([])
     let form = reactive({ id:null, active:false, pageSize:50 })

@@ -126,11 +126,15 @@ export default app=>{
         return ok(cid)
     })
 
-    app.post("/mark", async ({ body:{ uuid, name, mod }})=>{
-        logger.debug(`${uuid} 收藏名称 ${mod}/${name}`)
-        let module = await getModule(mod)
+    app.post("/mark", async ({ body:{ uuid, name, modId }})=>{
+        logger.debug(`${uuid} 收藏名称 ${modId}/${name}`)
+        let module = await getModule(modId)
 
-        insertNew(MARK, Mark.parse({ uuid, name, mod: module? module.name: mod, addOn: Date.now() }))
+        let mod = module? module.name: modId
+        if(count(MARK, "uuid=? AND name=? AND mod=?", uuid, name, mod) > 0) 
+            return
+        
+        insertNew(MARK, Mark.parse({ uuid, name, mod, addOn: Date.now() }))
     })
 
     /**

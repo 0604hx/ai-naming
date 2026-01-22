@@ -166,7 +166,7 @@
     const mark = row=>{
         toast.success(`⌈${row.text}⌋已收藏`)
 
-        RESULT("/mark", { uuid: dataStore.uuid, name:row.text, mod: id }, d=>{
+        RESULT("/mark", { uuid: dataStore.uuid, name:row.text, modId: id }, d=>{
             console.debug(d)
         })
     }

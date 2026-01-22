@@ -26,6 +26,9 @@
     const toast = useToast()
     const message = useMessage()
 
+    let names = ref([])
+    let nameTab = ref(0)
+
     const refreshNames = items=>{
         // 按 mod 分组
         let nameTabs = {}

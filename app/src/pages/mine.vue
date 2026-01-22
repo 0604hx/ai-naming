@@ -44,8 +44,6 @@
     const router = useRouter()
 
     let coupon = ref({})
-    let names = ref([])
-    let nameTab = ref(0)
 
     const toCoupon = ()=> router.push("/pages-sub/coupon")
     const help = ()=> message.alert({ title:"帮助与客服", msg:`更多帮助信息请在 ⌈咸鱼⌋ 搜索 ⌈集成显卡⌋ 或添加微信 ironman_1024`})

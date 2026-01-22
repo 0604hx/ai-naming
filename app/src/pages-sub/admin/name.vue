@@ -1,6 +1,6 @@
 <template>
     <AdminLayout title="名字管理" :tabbar="2" :top="0">
-        <wd-card title="条件筛选" custom-style="margin: 10px 0px 10px 0px;">
+        <wd-card title="条件筛选" custom-style="margin: 0px 0px 10px 0px;">
             <wd-row :gutter="10">
                 <wd-col :span="12"><wd-input :size="size" placeholder="名称" v-model="form.name"/></wd-col>
                 <wd-col :span="12"><wd-input :size="size" placeholder="模块" v-model="form.mod"/></wd-col>
@@ -38,7 +38,7 @@
     const toast = useToast()
     const message = useMessage()
     const size = "small"
-    const height = tableHeight(260)
+    const height = tableHeight(250)
 
     let data = ref([])
     let form = reactive({ pageSize:20 })
